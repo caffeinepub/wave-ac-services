@@ -164,7 +164,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
       if (!AudioContextClass) return;
 
       const ctx = new AudioContextClass();
-      const duration = 0.7;
+      const duration = 0.5;
       const sampleRate = ctx.sampleRate;
       const bufferSize = sampleRate * duration;
 
@@ -178,17 +178,17 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
       const source = ctx.createBufferSource();
       source.buffer = buffer;
 
-      // Bandpass filter to shape the wind sound
+      // Bandpass filter — higher frequency for sharper, louder wind
       const filter = ctx.createBiquadFilter();
       filter.type = "bandpass";
-      filter.frequency.value = 600;
-      filter.Q.value = 0.8;
+      filter.frequency.value = 1200;
+      filter.Q.value = 1.2;
 
-      // Gain envelope: ramp up then fade out
+      // Gain envelope: fast ramp up loud, quick fade
       const gainNode = ctx.createGain();
       gainNode.gain.setValueAtTime(0, ctx.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 0.08);
-      gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.25);
+      gainNode.gain.linearRampToValueAtTime(1.4, ctx.currentTime + 0.04);
+      gainNode.gain.linearRampToValueAtTime(1.0, ctx.currentTime + 0.15);
       gainNode.gain.exponentialRampToValueAtTime(
         0.001,
         ctx.currentTime + duration,
@@ -201,7 +201,6 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
       source.start();
       source.stop(ctx.currentTime + duration);
 
-      // Close context after sound finishes
       source.onended = () => {
         ctx.close();
       };

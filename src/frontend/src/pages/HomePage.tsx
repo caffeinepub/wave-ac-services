@@ -119,23 +119,53 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
   const playWindSound = () => {
     try {
-      const ctx = new AudioContext();
-      const bufferSize = ctx.sampleRate * 0.6;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as Window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      const ctx = new AudioContextClass();
+      const duration = 0.5;
+      const sampleRate = ctx.sampleRate;
+      const bufferSize = sampleRate * duration;
+
+      // White noise buffer
+      const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize) ** 1.5 * 0.5;
+        data[i] = Math.random() * 2 - 1;
       }
+
       const source = ctx.createBufferSource();
       source.buffer = buffer;
+
+      // Bandpass filter — higher frequency for sharper wind
       const filter = ctx.createBiquadFilter();
       filter.type = "bandpass";
-      filter.frequency.value = 400;
-      filter.Q.value = 0.5;
+      filter.frequency.value = 1200;
+      filter.Q.value = 1.2;
+
+      // Gain envelope: fast ramp up, loud peak, quick fade
+      const gainNode = ctx.createGain();
+      gainNode.gain.setValueAtTime(0, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(1.4, ctx.currentTime + 0.04);
+      gainNode.gain.linearRampToValueAtTime(1.0, ctx.currentTime + 0.15);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.001,
+        ctx.currentTime + duration,
+      );
+
       source.connect(filter);
-      filter.connect(ctx.destination);
+      filter.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
       source.start();
-      source.onended = () => ctx.close();
+      source.stop(ctx.currentTime + duration);
+
+      source.onended = () => {
+        ctx.close();
+      };
     } catch {
       // Silently ignore if Web Audio API not supported
     }
