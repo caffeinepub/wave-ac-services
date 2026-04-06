@@ -7,7 +7,6 @@ import {
   Clock,
   Package,
   Phone,
-  Wind,
 } from "lucide-react";
 
 type Page = "home" | "services" | "why-us" | "testimonials" | "contact";
@@ -115,15 +114,19 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
       <section className="py-16 sm:py-20 bg-brand-pale">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-10 items-center">
-            <div className="w-full md:w-48 flex-shrink-0 flex justify-center">
-              <div
-                className="w-40 h-40 rounded-full flex items-center justify-center"
-                style={{
-                  background:
-                    "linear-gradient(135deg, oklch(0.38 0.12 245) 0%, oklch(0.55 0.12 245) 100%)",
-                }}
-              >
-                <Wind className="w-20 h-20 text-white/90" />
+            <div className="w-full md:w-48 flex-shrink-0 flex flex-col items-center gap-3">
+              <img
+                src="/assets/generated/team-owner.dim_400x400.jpg"
+                alt="Mohammad Dilshad - Founder & Owner"
+                className="w-40 h-40 rounded-full object-cover shadow-md border-4 border-white"
+              />
+              <div className="text-center">
+                <p className="font-bold text-foreground text-base">
+                  Mohammad Dilshad
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  Founder &amp; Owner
+                </p>
               </div>
             </div>
             <div>
@@ -155,6 +158,30 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
                 <Phone className="w-4 h-4 mr-2" />
                 Get in Touch
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Team section */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+            Hamari Team
+          </h2>
+          <p className="text-muted-foreground text-sm sm:text-base mb-10 max-w-xl mx-auto">
+            Wave AC Services ke certified aur expert technicians
+          </p>
+          <div className="flex justify-center">
+            <div className="w-full max-w-[700px]">
+              <img
+                src="/assets/generated/team-group.dim_800x500.jpg"
+                alt="Wave AC Services Team"
+                className="w-full rounded-2xl shadow-md object-cover"
+              />
+              <p className="text-sm text-muted-foreground mt-4 text-center">
+                Wave AC Services Team — Delhi NCR
+              </p>
             </div>
           </div>
         </div>
