@@ -54,6 +54,24 @@ const trustPoints = [
   },
 ];
 
+const teamMembers = [
+  {
+    name: "Rahul Kumar",
+    role: "AC Technician",
+    photo: "/assets/generated/team-member1.dim_300x300.jpg",
+  },
+  {
+    name: "Suresh Verma",
+    role: "AC Technician",
+    photo: "/assets/generated/team-member2.dim_300x300.jpg",
+  },
+  {
+    name: "Amit Singh",
+    role: "AC Technician",
+    photo: "/assets/generated/team-member3.dim_300x300.jpg",
+  },
+];
+
 export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
   return (
     <main>
@@ -167,22 +185,49 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-            Hamari Team
+            Hamari Team — Wave AC Uniform Mein
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mb-10 max-w-xl mx-auto">
-            Wave AC Services ke certified aur expert technicians
+            Wave AC Services ke certified aur expert technicians, poore uniform
+            mein tayaar
           </p>
-          <div className="flex justify-center">
+
+          {/* Group photo */}
+          <div className="flex justify-center mb-10">
             <div className="w-full max-w-[700px]">
               <img
-                src="/assets/generated/team-group.dim_800x500.jpg"
-                alt="Wave AC Services Team"
+                src="/assets/generated/team-uniform-logo.dim_800x400.jpg"
+                alt="Wave AC Services Team in Uniform"
                 className="w-full rounded-2xl shadow-md object-cover"
               />
-              <p className="text-sm text-muted-foreground mt-4 text-center">
+              <p className="text-sm text-muted-foreground mt-3 text-center">
                 Wave AC Services Team — Delhi NCR
               </p>
             </div>
+          </div>
+
+          {/* Individual team member cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            {teamMembers.map(({ name, role, photo }, idx) => (
+              <div
+                key={name}
+                data-ocid={`team.item.${idx + 1}`}
+                className="bg-brand-pale rounded-xl p-6 text-center hover:shadow-md transition-all duration-200"
+              >
+                <img
+                  src={photo}
+                  alt={name}
+                  className="w-24 h-24 rounded-full object-cover mx-auto mb-3 border-4 border-white shadow-sm"
+                />
+                <h3 className="font-bold text-base text-foreground mb-0.5">
+                  {name}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-2">{role}</p>
+                <span className="inline-block text-xs text-primary bg-primary/10 border border-primary/20 rounded-full px-2 py-0.5">
+                  Wave AC Uniform
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
