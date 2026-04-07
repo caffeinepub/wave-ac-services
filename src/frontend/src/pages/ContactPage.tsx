@@ -76,6 +76,12 @@ export function ContactPage({
     if (onClearService) onClearService();
   };
 
+  const activeService = form.service || preSelectedService || "";
+  const waServiceMsg = activeService
+    ? `Namaste, mujhe ${activeService} ki service chahiye. Please contact me.`
+    : "Namaste, mujhe AC service ki jaankari chahiye.";
+  const waServiceUrl = `https://wa.me/919871984736?text=${encodeURIComponent(waServiceMsg)}`;
+
   return (
     <main>
       {/* Header */}
@@ -128,7 +134,7 @@ export function ContactPage({
                   </li>
                   <li>
                     <a
-                      href="https://wa.me/919871984736"
+                      href={waServiceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       data-ocid="contact.secondary_button"
@@ -187,7 +193,7 @@ export function ContactPage({
                   </Button>
                 </a>
                 <a
-                  href="https://wa.me/919871984736"
+                  href={waServiceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block"
