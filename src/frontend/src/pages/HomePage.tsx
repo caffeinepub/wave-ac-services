@@ -9,14 +9,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  ArrowUpDown,
+  ArrowRightLeft,
+  CalendarCheck,
+  CheckCircle2,
   Clock,
   Droplets,
   MessageCircle,
   Phone,
   Send,
-  Shield,
-  Thermometer,
+  Sparkles,
   Users,
   Wind,
   Wrench,
@@ -33,52 +34,67 @@ interface HomePageProps {
 const serviceCategories = [
   {
     label: "Installation Services",
+    icon: Wrench,
     services: [
       {
-        icon: Wind,
+        icon: Wrench,
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-600",
         title: "AC Installation",
         description:
-          "Professional installation of all AC brands including split, window, and cassette units.",
+          "Sabhi brands ke liye expert installation — split, window, cassette units.",
       },
       {
-        icon: ArrowUpDown,
+        icon: ArrowRightLeft,
+        iconBg: "bg-orange-50",
+        iconColor: "text-orange-600",
         title: "Uninstallation & Shifting",
         description:
-          "Safe removal and reinstallation of AC units when you're moving home or office.",
+          "AC shift karo bina damage ke — careful dismounting, safe aur fast.",
       },
     ],
   },
   {
     label: "Repair & Maintenance",
+    icon: Zap,
     services: [
       {
-        icon: Wrench,
+        icon: Zap,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-600",
         title: "AC Repair",
         description:
-          "Fast diagnosis and repair of all AC issues — cooling problems, noise, leaks, and more.",
+          "Cooling nahi, aawaz aa rahi, paani tap raha — sab theek karein.",
       },
       {
-        icon: Shield,
+        icon: CalendarCheck,
+        iconBg: "bg-green-50",
+        iconColor: "text-green-600",
         title: "AC Maintenance",
         description:
-          "Regular servicing and AMC contracts to keep your AC running at peak efficiency.",
+          "Annual maintenance contract — saal bhar tension free rahein.",
       },
     ],
   },
   {
     label: "Cleaning & Gas",
+    icon: Droplets,
     services: [
       {
-        icon: Thermometer,
+        icon: Wind,
+        iconBg: "bg-cyan-50",
+        iconColor: "text-cyan-600",
         title: "Gas Refilling",
         description:
-          "Certified gas refilling with genuine refrigerant for optimal cooling performance.",
+          "R-22 & R-32 gas refilling — leak check aur pressure testing included.",
       },
       {
-        icon: Droplets,
+        icon: Sparkles,
+        iconBg: "bg-purple-50",
+        iconColor: "text-purple-600",
         title: "AC Deep Cleaning",
         description:
-          "Complete foam jet cleaning, coil washing, drain pipe cleaning, and sanitization.",
+          "Foam jet cleaning, coil wash, drain cleaning — 30% better cooling.",
       },
     ],
   },
@@ -97,6 +113,13 @@ const stats = [
   { value: "100%", label: "Certified Work" },
 ];
 
+const whyUsPoints = [
+  "Sabhi brands: Samsung, LG, Daikin, Voltas, Hitachi",
+  "Certified technicians with 10+ years experience",
+  "Genuine spare parts only",
+  "Service available 7 days — 10am to 7pm",
+];
+
 type FormState = {
   name: string;
   phone: string;
@@ -113,7 +136,6 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
   const [clickedCard, setClickedCard] = useState<string | null>(null);
   const bookingRef = useRef<HTMLElement>(null);
 
-  // Service title to form value mapping
   const serviceTitleMap: Record<string, string> = {
     "AC Installation": "AC Installation",
     "Uninstallation & Shifting": "Uninstallation & Shifting",
@@ -136,7 +158,6 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       const sampleRate = ctx.sampleRate;
       const bufferSize = sampleRate * duration;
 
-      // White noise buffer
       const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
@@ -146,13 +167,11 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       const source = ctx.createBufferSource();
       source.buffer = buffer;
 
-      // Bandpass filter — higher frequency for sharper wind
       const filter = ctx.createBiquadFilter();
       filter.type = "bandpass";
       filter.frequency.value = 1200;
       filter.Q.value = 1.2;
 
-      // Gain envelope: fast ramp up, loud peak, quick fade
       const gainNode = ctx.createGain();
       gainNode.gain.setValueAtTime(0, ctx.currentTime);
       gainNode.gain.linearRampToValueAtTime(1.4, ctx.currentTime + 0.04);
@@ -168,12 +187,9 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
       source.start();
       source.stop(ctx.currentTime + duration);
-
-      source.onended = () => {
-        ctx.close();
-      };
+      source.onended = () => ctx.close();
     } catch {
-      // Silently ignore if Web Audio API not supported
+      // Silently ignore
     }
   };
 
@@ -293,7 +309,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       </section>
 
       {/* Stats Bar */}
-      <section className="bg-brand-pale border-b border-border">
+      <section className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map(({ value, label }) => (
@@ -311,7 +327,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       </section>
 
       {/* All Services Section — grouped by category */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary bg-primary/8 px-4 py-1.5 rounded-full border border-primary/20 mb-3">
@@ -321,66 +337,104 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
               Our Expert AC Services
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
-              Comprehensive air conditioning solutions for homes and offices
-              across Delhi NCR
+              Comprehensive air conditioning solutions — click any service to
+              book instantly
             </p>
           </div>
 
           {/* Category Groups */}
           <div className="space-y-12">
-            {serviceCategories.map(({ label, services }) => (
+            {serviceCategories.map(({ label, icon: CatIcon, services }) => (
               <div key={label}>
-                {/* Category Divider */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="h-px flex-grow bg-border" />
-                  <span className="text-sm font-bold text-primary bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 whitespace-nowrap">
+                {/* Category Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <CatIcon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-base font-bold text-foreground">
                     {label}
-                  </span>
+                  </h3>
                   <div className="h-px flex-grow bg-border" />
                 </div>
 
-                {/* Services in this category */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                  {services.map(({ icon: Icon, title, description }) => (
-                    <button
-                      key={title}
-                      type="button"
-                      onClick={() => handleServiceClick(title)}
-                      className={`w-full text-left bg-white rounded-xl border border-border shadow-card p-6 hover:shadow-md hover:border-brand-mid transition-all duration-200 group cursor-pointer select-none
-                        ${clickedCard === title ? "scale-105 shadow-xl border-primary animate-pulse" : "hover:scale-[1.02]"}`}
-                    >
-                      <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors duration-200
-                        ${clickedCard === title ? "bg-primary" : "bg-brand-pale group-hover:bg-primary"}`}
+                {/* Service Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-4xl mx-auto">
+                  {services.map(
+                    ({ icon: Icon, iconBg, iconColor, title, description }) => (
+                      <button
+                        key={title}
+                        type="button"
+                        onClick={() => handleServiceClick(title)}
+                        data-ocid={`home.service.${title.toLowerCase().replace(/[^a-z0-9]/g, "_")}`}
+                        className={[
+                          "w-full text-left bg-card rounded-xl border-2 p-5 transition-all duration-200 group cursor-pointer select-none relative overflow-hidden",
+                          clickedCard === title
+                            ? "border-primary shadow-lg scale-[1.03]"
+                            : "border-border hover:border-primary/50 hover:shadow-md hover:scale-[1.01]",
+                        ].join(" ")}
                       >
-                        <Icon
-                          className={`w-6 h-6 transition-colors duration-200
-                          ${clickedCard === title ? "text-white" : "text-primary group-hover:text-white"}`}
-                        />
+                        {/* Wind burst for clicked */}
                         {clickedCard === title && (
-                          <span className="absolute text-2xl animate-bounce ml-8 -mt-8 pointer-events-none select-none">
-                            💨
-                          </span>
+                          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-10">
+                            <div
+                              className="wind-streak"
+                              style={{ top: "30%", animationDelay: "0ms" }}
+                            />
+                            <div
+                              className="wind-streak-wide"
+                              style={{ top: "50%", animationDelay: "80ms" }}
+                            />
+                            <div
+                              className="wind-streak"
+                              style={{ top: "70%", animationDelay: "160ms" }}
+                            />
+                          </div>
                         )}
-                      </div>
-                      <h3 className="font-bold text-base text-foreground mb-2">
-                        {title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {description}
-                      </p>
-                      <div className="mt-3 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
-                        <Wind className="w-3 h-3" /> Book This Service
-                      </div>
-                    </button>
-                  ))}
+
+                        <div className="flex items-start gap-4">
+                          <div
+                            className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${iconBg} group-hover:scale-110`}
+                          >
+                            <Icon className={`w-6 h-6 ${iconColor}`} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-base text-foreground mb-1 leading-tight">
+                              {title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                              {description}
+                            </p>
+                            <div className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-primary">
+                              <Wind className="w-3.5 h-3.5" />
+                              <span>Book Now →</span>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    ),
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
+          {/* Why Choose Us brief */}
+          <div className="mt-14 bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
+            <h3 className="font-bold text-base sm:text-lg text-foreground mb-4 text-center">
+              Kyun Chunein Wave AC Services?
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {whyUsPoints.map((point) => (
+                <div key={point} className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground">{point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Hamari Team subsection */}
-          <div className="mt-16">
+          <div className="mt-14">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-px flex-grow bg-border" />
               <span className="text-sm font-bold text-primary bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 whitespace-nowrap flex items-center gap-2">
@@ -394,12 +448,12 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <div
                   key={id}
                   data-ocid={`team.item.${idx + 1}`}
-                  className="bg-brand-pale rounded-xl p-6 text-center hover:shadow-md transition-all duration-200"
+                  className="bg-card rounded-xl p-6 text-center hover:shadow-md transition-all duration-200 border border-border"
                 >
                   <img
                     src={photo}
                     alt="Wave AC Team Member"
-                    className="w-36 h-36 rounded-full object-cover mx-auto mb-3 border-4 border-white shadow-sm"
+                    className="w-36 h-36 rounded-full object-cover mx-auto mb-3 border-4 border-primary/20 shadow-sm"
                   />
                   <span className="inline-block text-xs text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-1">
                     Wave Air Conditioning Service
@@ -412,7 +466,10 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       </section>
 
       {/* Quick Booking Section */}
-      <section ref={bookingRef} className="py-16 sm:py-20 bg-brand-pale">
+      <section
+        ref={bookingRef}
+        className="py-16 sm:py-20 bg-card border-y border-border"
+      >
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
@@ -450,7 +507,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-5 bg-white rounded-2xl border border-border shadow-card p-7"
+              className="space-y-5 bg-background rounded-2xl border border-border shadow-sm p-7"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
