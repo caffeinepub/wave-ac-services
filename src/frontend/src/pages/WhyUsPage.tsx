@@ -55,21 +55,9 @@ const trustPoints = [
 ];
 
 const teamMembers = [
-  {
-    name: "Rahul Kumar",
-    role: "AC Technician",
-    photo: "/assets/generated/team-member1.dim_300x300.jpg",
-  },
-  {
-    name: "Suresh Verma",
-    role: "AC Technician",
-    photo: "/assets/generated/team-member2.dim_300x300.jpg",
-  },
-  {
-    name: "Amit Singh",
-    role: "AC Technician",
-    photo: "/assets/generated/team-member3.dim_300x300.jpg",
-  },
+  { id: "tm1", photo: "/assets/generated/team-member1.dim_300x300.jpg" },
+  { id: "tm2", photo: "/assets/generated/team-member2.dim_300x300.jpg" },
+  { id: "tm3", photo: "/assets/generated/team-member3.dim_300x300.jpg" },
 ];
 
 export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
@@ -134,7 +122,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
           <div className="flex flex-col md:flex-row gap-10 items-center">
             <div className="w-full md:w-48 flex-shrink-0 flex flex-col items-center gap-3">
               <img
-                src="/assets/generated/team-owner.dim_400x400.jpg"
+                src="https://i.ibb.co/ksG8vmjm/photo.jpg"
                 alt="Mohammad Dilshad - Founder & Owner"
                 className="w-40 h-40 rounded-full object-cover shadow-md border-4 border-white"
               />
@@ -208,23 +196,19 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
 
           {/* Individual team member cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {teamMembers.map(({ name, role, photo }, idx) => (
+            {teamMembers.map(({ id, photo }, idx) => (
               <div
-                key={name}
+                key={id}
                 data-ocid={`team.item.${idx + 1}`}
                 className="bg-brand-pale rounded-xl p-6 text-center hover:shadow-md transition-all duration-200"
               >
                 <img
                   src={photo}
-                  alt={name}
-                  className="w-24 h-24 rounded-full object-cover mx-auto mb-3 border-4 border-white shadow-sm"
+                  alt="Wave AC Team Member"
+                  className="w-36 h-36 rounded-full object-cover mx-auto mb-4 border-4 border-white shadow-sm"
                 />
-                <h3 className="font-bold text-base text-foreground mb-0.5">
-                  {name}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2">{role}</p>
-                <span className="inline-block text-xs text-primary bg-primary/10 border border-primary/20 rounded-full px-2 py-0.5">
-                  Wave AC Uniform
+                <span className="inline-block text-xs text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-1">
+                  Wave Air Conditioning Service
                 </span>
               </div>
             ))}
