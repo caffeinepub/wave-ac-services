@@ -27,7 +27,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white shadow-header">
+    <header className="sticky top-0 z-50 w-full bg-white navbar-3d">
       <nav
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
         aria-label="Main navigation"

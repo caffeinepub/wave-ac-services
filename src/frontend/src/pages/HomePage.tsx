@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   Clock,
   Droplets,
+  MapPin,
   MessageCircle,
   Phone,
   Send,
@@ -86,7 +87,7 @@ const serviceCategories = [
         iconColor: "text-cyan-600",
         title: "Gas Refilling",
         description:
-          "R-22 & R-32 gas refilling — leak check aur pressure testing included.",
+          "R-22, R-32 & R-10 gas refilling — leak check aur pressure testing included.",
       },
       {
         icon: Sparkles,
@@ -123,6 +124,7 @@ const whyUsPoints = [
 type FormState = {
   name: string;
   phone: string;
+  address: string;
   service: string;
 };
 
@@ -130,6 +132,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
   const [form, setForm] = useState<FormState>({
     name: "",
     phone: "",
+    address: "",
     service: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -219,8 +222,9 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.phone || !form.service) return;
+    const addressPart = form.address ? ` Mera address: ${form.address}.` : "";
     const msg = encodeURIComponent(
-      `Hi, I'm ${form.name}. I need help with: ${form.service}. My number is ${form.phone}.`,
+      `Hi, I'm ${form.name}. I need help with: ${form.service}. My number is ${form.phone}.${addressPart}`,
     );
     window.open(`https://wa.me/919871984736?text=${msg}`, "_blank");
     setSubmitted(true);
@@ -244,7 +248,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <Zap className="w-3.5 h-3.5" />
                 Delhi's #1 AC Service Provider
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-bold text-white leading-tight mb-4">
+              <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-bold text-white leading-tight mb-4 hero-3d text-3d-light">
                 Expert AC Services
                 <span className="block text-white/80 text-3xl sm:text-4xl lg:text-[40px] font-semibold mt-1">
                   At Your Doorstep
@@ -258,7 +262,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <a href="tel:+919871984736" data-ocid="hero.primary_button">
                   <Button
                     size="lg"
-                    className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-8 py-6 text-lg shadow-md w-full sm:w-auto"
+                    className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-8 py-6 text-lg shadow-md w-full sm:w-auto btn-3d"
                   >
                     <Phone className="w-5 h-5 mr-2" />
                     Call Now
@@ -272,7 +276,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 >
                   <Button
                     size="lg"
-                    className="font-bold rounded-full px-8 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90"
+                    className="font-bold rounded-full px-8 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90 btn-3d"
                     style={{ backgroundColor: "#25D366" }}
                   >
                     <MessageCircle className="w-5 h-5 mr-2" />
@@ -309,12 +313,12 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       </section>
 
       {/* Stats Bar */}
-      <section className="bg-card border-b border-border">
+      <section className="bg-card border-b border-border navbar-3d">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map(({ value, label }) => (
               <div key={label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-primary">
+                <div className="text-2xl sm:text-3xl font-bold text-primary text-3d">
                   {value}
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">
@@ -333,7 +337,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
             <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary bg-primary/8 px-4 py-1.5 rounded-full border border-primary/20 mb-3">
               All Services
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
               Our Expert AC Services
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
@@ -367,10 +371,10 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                         onClick={() => handleServiceClick(title)}
                         data-ocid={`home.service.${title.toLowerCase().replace(/[^a-z0-9]/g, "_")}`}
                         className={[
-                          "w-full text-left bg-card rounded-xl border-2 p-5 transition-all duration-200 group cursor-pointer select-none relative overflow-hidden",
+                          "w-full text-left bg-card rounded-xl border-2 p-5 transition-all duration-200 group cursor-pointer select-none relative overflow-hidden card-3d",
                           clickedCard === title
-                            ? "border-primary shadow-lg scale-[1.03]"
-                            : "border-border hover:border-primary/50 hover:shadow-md hover:scale-[1.01]",
+                            ? "border-primary scale-[1.03]"
+                            : "border-border hover:border-primary/50",
                         ].join(" ")}
                       >
                         {/* Wind burst for clicked */}
@@ -419,8 +423,8 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           </div>
 
           {/* Why Choose Us brief */}
-          <div className="mt-14 bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
-            <h3 className="font-bold text-base sm:text-lg text-foreground mb-4 text-center">
+          <div className="mt-14 bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto card-3d-sm">
+            <h3 className="font-bold text-base sm:text-lg text-foreground mb-4 text-center text-3d">
               Kyun Chunein Wave AC Services?
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -448,7 +452,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <div
                   key={id}
                   data-ocid={`team.item.${idx + 1}`}
-                  className="bg-card rounded-xl p-6 text-center hover:shadow-md transition-all duration-200 border border-border"
+                  className="bg-card rounded-xl p-6 text-center border border-border card-3d-sm"
                 >
                   <img
                     src={photo}
@@ -472,7 +476,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       >
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
               Book a Service
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base">
@@ -482,7 +486,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           </div>
 
           {submitted ? (
-            <div className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center">
+            <div className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center card-3d-sm">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
                 style={{ backgroundColor: "#25D366" }}
@@ -498,7 +502,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
               </p>
               <Button
                 onClick={() => setSubmitted(false)}
-                className="mt-6 font-bold rounded-full px-8 py-5 text-base text-white hover:opacity-90"
+                className="mt-6 font-bold rounded-full px-8 py-5 text-base text-white hover:opacity-90 btn-3d"
                 style={{ backgroundColor: "#25D366" }}
               >
                 Book Another Service
@@ -507,7 +511,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-5 bg-background rounded-2xl border border-border shadow-sm p-7"
+              className="space-y-5 bg-background rounded-2xl border border-border p-7 form-3d"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
@@ -537,6 +541,25 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                     className="border-border focus:border-primary"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="haddress"
+                  className="text-sm font-semibold flex items-center gap-1.5"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-primary" />
+                  Aapka Address <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="haddress"
+                  value={form.address}
+                  onChange={handleChange("address")}
+                  placeholder="Ghar ka address likhein (mohalla, area, Delhi)"
+                  required
+                  className="border-border focus:border-primary"
+                  data-ocid="home.address_input"
+                />
               </div>
 
               <div className="space-y-1.5">
@@ -575,8 +598,9 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
               <Button
                 type="submit"
-                className="w-full font-bold text-base py-6 rounded-full text-white hover:opacity-90"
+                className="w-full font-bold text-base py-6 rounded-full text-white hover:opacity-90 btn-3d"
                 style={{ backgroundColor: "#25D366" }}
+                data-ocid="home.booking_submit"
               >
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Book via WhatsApp
@@ -603,7 +627,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
             <Users className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 text-3d-light">
             Need AC Help?
           </h2>
           <p className="text-white/80 mb-8 text-base sm:text-lg">
@@ -614,7 +638,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
             <a href="tel:+919871984736" data-ocid="cta.primary_button">
               <Button
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto"
+                className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto btn-3d"
               >
                 <Phone className="w-6 h-6 mr-2" />
                 +91-9871984736
@@ -628,7 +652,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
             >
               <Button
                 size="lg"
-                className="font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90"
+                className="font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90 btn-3d"
                 style={{ backgroundColor: "#25D366" }}
               >
                 <MessageCircle className="w-6 h-6 mr-2" />

@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 type FormState = {
   name: string;
   phone: string;
+  address: string;
   service: string;
   message: string;
 };
@@ -38,6 +39,7 @@ export function ContactPage({
   const [form, setForm] = useState<FormState>({
     name: "",
     phone: "",
+    address: "",
     service: preSelectedService ?? "",
     message: "",
   });
@@ -68,8 +70,9 @@ export function ContactPage({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.phone || !form.service) return;
+    const addressPart = form.address ? ` Mera address: ${form.address}.` : "";
     const msg = encodeURIComponent(
-      `Hi, I'm ${form.name}. I need help with: ${form.service}.${form.message ? ` ${form.message}` : ""} My number is ${form.phone}.`,
+      `Hi, I'm ${form.name}. I need help with: ${form.service}.${form.message ? ` ${form.message}` : ""} My number is ${form.phone}.${addressPart}`,
     );
     window.open(`https://wa.me/919871984736?text=${msg}`, "_blank");
     setSubmitted(true);
@@ -93,20 +96,22 @@ export function ContactPage({
         }}
       >
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3">Contact Us</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-3d-light">
+            Contact Us
+          </h1>
           <p className="text-white/80 text-base sm:text-lg">
             Book a service or get a free quote. Available daily 10 AM – 7 PM.
           </p>
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-background">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Contact Details */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-foreground mb-5">
+                <h2 className="text-xl font-bold text-foreground mb-5 text-3d">
                   Get In Touch
                 </h2>
                 <ul className="space-y-4">
@@ -114,9 +119,9 @@ export function ContactPage({
                     <a
                       href="tel:+919871984736"
                       data-ocid="contact.primary_button"
-                      className="flex items-start gap-4 p-4 rounded-xl border border-border hover:border-brand-mid hover:bg-brand-pale transition-all duration-200 group"
+                      className="flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/60 hover:bg-primary/5 transition-all duration-200 group card-3d-sm"
                     >
-                      <div className="w-12 h-12 rounded-xl bg-brand-pale flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
                         <Phone className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
                       </div>
                       <div>
@@ -138,7 +143,7 @@ export function ContactPage({
                       target="_blank"
                       rel="noopener noreferrer"
                       data-ocid="contact.secondary_button"
-                      className="flex items-start gap-4 p-4 rounded-xl border border-border hover:border-green-400 hover:bg-green-50 transition-all duration-200 group"
+                      className="flex items-start gap-4 p-4 rounded-xl border border-border hover:border-green-400 hover:bg-green-50 transition-all duration-200 group card-3d-sm"
                     >
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
@@ -162,8 +167,8 @@ export function ContactPage({
                       </div>
                     </a>
                   </li>
-                  <li className="flex items-start gap-4 p-4 rounded-xl border border-border">
-                    <div className="w-12 h-12 rounded-xl bg-brand-pale flex items-center justify-center flex-shrink-0">
+                  <li className="flex items-start gap-4 p-4 rounded-xl border border-border card-3d-sm">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <MapPin className="w-6 h-6 text-primary" />
                     </div>
                     <div>
@@ -186,7 +191,7 @@ export function ContactPage({
                 <a href="tel:+919871984736" className="block">
                   <Button
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary/90 text-white rounded-full font-bold py-6 text-base"
+                    className="w-full bg-primary hover:bg-primary/90 text-white rounded-full font-bold py-6 text-base btn-3d"
                   >
                     <Phone className="w-5 h-5 mr-2" />
                     Call +91-9871984736
@@ -200,7 +205,7 @@ export function ContactPage({
                 >
                   <Button
                     size="lg"
-                    className="w-full font-bold rounded-full py-6 text-base text-white hover:opacity-90"
+                    className="w-full font-bold rounded-full py-6 text-base text-white hover:opacity-90 btn-3d"
                     style={{ backgroundColor: "#25D366" }}
                   >
                     <MessageCircle className="w-5 h-5 mr-2" />
@@ -211,7 +216,7 @@ export function ContactPage({
 
               {/* Map card */}
               <div
-                className="rounded-xl border border-border overflow-hidden"
+                className="rounded-xl border border-border overflow-hidden card-3d-sm"
                 data-ocid="contact.panel"
               >
                 <div
@@ -241,7 +246,7 @@ export function ContactPage({
 
             {/* Contact Form */}
             <div className="lg:col-span-3">
-              <h2 className="text-xl font-bold text-foreground mb-5">
+              <h2 className="text-xl font-bold text-foreground mb-5 text-3d">
                 Book a Service
               </h2>
 
@@ -259,7 +264,7 @@ export function ContactPage({
               {submitted ? (
                 <div
                   data-ocid="contact.success_state"
-                  className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center"
+                  className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center card-3d-sm"
                 >
                   <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
                   <h3 className="text-xl font-bold text-foreground mb-2">
@@ -271,7 +276,7 @@ export function ContactPage({
                   </p>
                   <Button
                     onClick={() => setSubmitted(false)}
-                    className="mt-6 bg-primary hover:bg-primary/90 text-white rounded-full px-6"
+                    className="mt-6 bg-primary hover:bg-primary/90 text-white rounded-full px-6 btn-3d"
                     data-ocid="contact.secondary_button"
                   >
                     Send Another Request
@@ -282,7 +287,7 @@ export function ContactPage({
                   id="booking-form"
                   onSubmit={handleSubmit}
                   data-ocid="contact.modal"
-                  className="space-y-5 bg-white rounded-2xl border border-border shadow-card p-7"
+                  className="space-y-5 bg-background rounded-2xl border border-border p-7 form-3d"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
@@ -314,6 +319,25 @@ export function ContactPage({
                         className="border-border focus:border-primary"
                       />
                     </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label
+                      htmlFor="address"
+                      className="text-sm font-semibold flex items-center gap-1.5"
+                    >
+                      <MapPin className="w-3.5 h-3.5 text-primary" />
+                      Aapka Address <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="address"
+                      value={form.address}
+                      onChange={handleChange("address")}
+                      placeholder="Ghar ka address likhein (mohalla, area, Delhi)"
+                      required
+                      data-ocid="contact.address_input"
+                      className="border-border focus:border-primary"
+                    />
                   </div>
 
                   <div className="space-y-1.5">
@@ -378,7 +402,7 @@ export function ContactPage({
                     type="submit"
                     data-ocid="contact.submit_button"
                     size="lg"
-                    className="w-full text-white rounded-full font-bold text-base py-6 hover:opacity-90"
+                    className="w-full text-white rounded-full font-bold text-base py-6 hover:opacity-90 btn-3d"
                     style={{ backgroundColor: "#25D366" }}
                   >
                     <Send className="w-5 h-5 mr-2" />

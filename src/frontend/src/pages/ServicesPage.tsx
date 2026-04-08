@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowRightLeft,
   CalendarCheck,
+  CalendarDays,
   CheckCircle2,
   ChevronRight,
   Droplets,
   Grid3X3,
-  IndianRupee,
   MessageCircle,
   Phone,
   Settings,
@@ -15,7 +15,6 @@ import {
   Sparkles,
   ThumbsUp,
   Timer,
-  Wallet,
   Wind,
   Wrench,
   Zap,
@@ -71,7 +70,6 @@ const services = [
       "Power check included",
       "1 year installation warranty",
     ],
-    price: "₹799 se shuru",
     duration: "2-3 hours",
   },
   {
@@ -88,7 +86,6 @@ const services = [
       "Genuine spare parts",
       "Service guarantee",
     ],
-    price: "₹299 se shuru",
     duration: "1-2 hours",
   },
   {
@@ -105,7 +102,6 @@ const services = [
       "Parts discount 10%",
       "Remote assistance",
     ],
-    price: "₹999/year se shuru",
     duration: "Annual plan",
   },
   {
@@ -115,14 +111,13 @@ const services = [
     title: "Gas Refilling",
     category: "Cleaning & Gas" as ServiceCategory,
     description:
-      "AC ki cooling power wapas laao — R-22 & R-32 gas available, leak check included.",
+      "AC ki cooling power wapas laao — R-22, R-32 & R-10 gas available, leak check included.",
     features: [
-      "R-22 & R-32 gas available",
+      "R-22, R-32 & R-10 gas available",
       "Leak check included",
       "Pressure testing",
       "90 day guarantee",
     ],
-    price: "₹800 se shuru",
     duration: "1-1.5 hours",
   },
   {
@@ -139,7 +134,6 @@ const services = [
       "Drain cleaning",
       "Better cooling efficiency",
     ],
-    price: "₹399 se shuru",
     duration: "1-2 hours",
   },
   {
@@ -156,7 +150,6 @@ const services = [
       "Reinstallation option",
       "No damage guarantee",
     ],
-    price: "₹499 se shuru",
     duration: "1-2 hours",
   },
 ];
@@ -164,8 +157,8 @@ const services = [
 const trustBadges = [
   { icon: Shield, label: "10+ Years Experience" },
   { icon: ThumbsUp, label: "Genuine Parts" },
-  { icon: CalendarCheck, label: "7 Days Available" },
-  { icon: Wallet, label: "Affordable Prices" },
+  { icon: CalendarDays, label: "7 Days Available" },
+  { icon: CheckCircle2, label: "Affordable Prices" },
 ];
 
 const heroStats = [
@@ -277,7 +270,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
             <Settings className="w-3.5 h-3.5" />
             Delhi ke Best AC Technicians
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold text-white leading-tight mb-3">
+          <h1 className="text-3xl sm:text-5xl font-bold text-white leading-tight mb-3 text-3d-light">
             Hamare AC Services
           </h1>
           <p className="text-white/75 text-base sm:text-lg mb-8 max-w-lg mx-auto">
@@ -289,7 +282,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
           <div className="flex justify-center gap-6 sm:gap-12">
             {heroStats.map(({ value, label }) => (
               <div key={label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white">
+                <div className="text-2xl sm:text-3xl font-bold text-white text-3d-light">
                   {value}
                 </div>
                 <div className="text-xs sm:text-sm text-white/65 font-medium mt-0.5">
@@ -302,7 +295,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
       </section>
 
       {/* Category Tabs */}
-      <section className="sticky top-0 z-20 bg-card border-b border-border shadow-sm">
+      <section className="sticky top-0 z-20 bg-card border-b border-border navbar-3d">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div
             className="flex gap-2 overflow-x-auto py-3"
@@ -320,9 +313,9 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
                   onClick={() => setActiveCategory(cat)}
                   data-ocid={`services.filter.${cat.toLowerCase().replace(/[^a-z0-9]/g, "_")}.tab`}
                   className={[
-                    "flex-shrink-0 inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    "flex-shrink-0 inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary btn-3d",
                     isActive
-                      ? "bg-primary text-white border-primary shadow-md"
+                      ? "bg-primary text-white border-primary"
                       : "bg-background text-foreground border-border hover:border-primary/60 hover:bg-primary/5",
                   ].join(" ")}
                   aria-pressed={isActive}
@@ -378,7 +371,6 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
                 title,
                 description,
                 features,
-                price,
                 duration,
               }) => (
                 <button
@@ -386,10 +378,10 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
                   type="button"
                   data-ocid={`services.item.${title.toLowerCase().replace(/[^a-z0-9]/g, "_")}`}
                   className={[
-                    "relative bg-card rounded-2xl border-2 shadow-sm flex flex-col transition-all duration-200 overflow-hidden group cursor-pointer text-left w-full",
+                    "relative bg-card rounded-2xl border-2 flex flex-col overflow-hidden group cursor-pointer text-left w-full card-3d",
                     clickedCard === title
-                      ? "border-primary shadow-lg scale-[1.03]"
-                      : "border-border hover:border-primary/40 hover:shadow-md hover:scale-[1.01]",
+                      ? "border-primary scale-[1.03]"
+                      : "border-border hover:border-primary/40",
                   ].join(" ")}
                   onClick={() => handleBookNow(title)}
                   aria-label={`Book ${title}`}
@@ -421,7 +413,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
                   )}
 
                   <div className="p-6 sm:p-7 flex flex-col h-full">
-                    {/* Icon + Price row */}
+                    {/* Icon + duration row */}
                     <div className="flex items-start justify-between mb-5">
                       <div
                         className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 ${iconBg} transition-transform duration-200 group-hover:scale-110`}
@@ -430,20 +422,14 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
                           className={`w-7 h-7 sm:w-8 sm:h-8 ${iconColor}`}
                         />
                       </div>
-                      <div className="text-right">
-                        <div className="flex items-center gap-1 justify-end text-green-600 font-bold text-sm">
-                          <IndianRupee className="w-3.5 h-3.5" />
-                          <span>{price.replace("₹", "")}</span>
-                        </div>
-                        <div className="flex items-center gap-1 justify-end text-muted-foreground text-xs mt-1">
-                          <Timer className="w-3 h-3" />
-                          {duration}
-                        </div>
+                      <div className="flex items-center gap-1 justify-end text-muted-foreground text-xs mt-1">
+                        <Timer className="w-3 h-3" />
+                        {duration}
                       </div>
                     </div>
 
                     {/* Title */}
-                    <h2 className="font-bold text-lg sm:text-xl text-foreground mb-2 leading-tight">
+                    <h2 className="font-bold text-lg sm:text-xl text-foreground mb-2 leading-tight text-3d">
                       {title}
                     </h2>
 
@@ -488,7 +474,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
             {trustBadges.map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left"
+                className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left card-3d-sm p-3 rounded-xl"
               >
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Icon className="w-5 h-5 text-primary" />
@@ -511,7 +497,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
         }}
       >
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 text-3d-light">
             Abhi Call Karein ya WhatsApp Karein
           </h2>
           <p className="text-white/70 mb-8 text-sm sm:text-base">
@@ -522,7 +508,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
               <Button
                 data-ocid="services.primary_button"
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 rounded-full px-8 py-6 text-base font-bold w-full sm:w-auto shadow-lg"
+                className="bg-white text-primary hover:bg-white/90 rounded-full px-8 py-6 text-base font-bold w-full sm:w-auto btn-3d"
               >
                 <Phone className="w-5 h-5 mr-2" />
                 Call +91-9871984736
@@ -536,7 +522,7 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
               <Button
                 data-ocid="services.secondary_button"
                 size="lg"
-                className="rounded-full px-8 py-6 text-base font-bold w-full sm:w-auto text-white hover:opacity-90 shadow-lg"
+                className="rounded-full px-8 py-6 text-base font-bold w-full sm:w-auto text-white hover:opacity-90 btn-3d"
                 style={{ backgroundColor: "#25D366" }}
               >
                 <MessageCircle className="w-5 h-5 mr-2" />

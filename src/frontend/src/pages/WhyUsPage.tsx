@@ -72,7 +72,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
         }}
       >
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-3d-light">
             Why Choose Wave AC?
           </h1>
           <p className="text-white/80 text-base sm:text-lg">
@@ -83,10 +83,10 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
       </section>
 
       {/* Trust signals */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
               What Sets Us Apart
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
@@ -99,9 +99,9 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
               <div
                 key={title}
                 data-ocid={`whyus.item.${idx + 1}`}
-                className="bg-white rounded-2xl border border-border shadow-card p-7 hover:shadow-md hover:border-brand-mid transition-all duration-200"
+                className="bg-card rounded-2xl border border-border p-7 card-3d"
               >
-                <div className="w-14 h-14 rounded-2xl bg-brand-pale flex items-center justify-center mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
                   <Icon className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-bold text-lg text-foreground mb-2">
@@ -117,7 +117,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
       </section>
 
       {/* About section */}
-      <section className="py-16 sm:py-20 bg-brand-pale">
+      <section className="py-16 sm:py-20 bg-secondary/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-10 items-center">
             <div className="w-full md:w-48 flex-shrink-0 flex flex-col items-center gap-3">
@@ -170,9 +170,9 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
       </section>
 
       {/* Our Team section */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
             Hamari Team — Wave AC Uniform Mein
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mb-10 max-w-xl mx-auto">
@@ -200,7 +200,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
               <div
                 key={id}
                 data-ocid={`team.item.${idx + 1}`}
-                className="bg-brand-pale rounded-xl p-6 text-center hover:shadow-md transition-all duration-200"
+                className="bg-secondary/30 rounded-xl p-6 text-center card-3d-sm"
               >
                 <img
                   src={photo}

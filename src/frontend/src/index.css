@@ -115,3 +115,94 @@
     transform: translateX(90px) scaleX(0.4);
   }
 }
+
+/* ============================================
+   3D EFFECTS — Cards, Buttons, Sections
+   ============================================ */
+
+/* 3D card base — apply to service cards, why-us cards, testimonial cards */
+.card-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 6px 16px rgba(0, 0, 0, 0.1), 0
+    12px 28px rgba(0, 0, 0, 0.08);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow
+    0.28s ease;
+}
+
+.card-3d:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 16px 36px rgba(0, 0, 0, 0.16), 0
+    24px 48px rgba(0, 0, 0, 0.1);
+}
+
+/* 3D lift light — for smaller cards and team member cards */
+.card-3d-sm {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow
+    0.25s ease;
+}
+
+.card-3d-sm:hover {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 12px 28px rgba(0, 0, 0, 0.13);
+}
+
+/* 3D button press effect */
+.btn-3d {
+  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2), 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0px rgba(0, 0, 0, 0.2), 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.btn-3d:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* 3D text depth for section headings */
+.text-3d {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-3d-light {
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.3), 0 2px 10px
+    rgba(255, 255, 255, 0.15);
+}
+
+/* Navbar 3D shadow */
+.navbar-3d {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.1), 0
+    8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Booking form 3D container */
+.form-3d {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.1), 0
+    20px 48px rgba(0, 0, 0, 0.08);
+}
+
+/* Hero heading perspective 3D */
+.hero-3d {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-3d,
+  .card-3d-sm,
+  .btn-3d {
+    transition: none;
+  }
+  .card-3d:hover,
+  .card-3d-sm:hover {
+    transform: none;
+  }
+  .btn-3d:hover,
+  .btn-3d:active {
+    transform: none;
+  }
+}
