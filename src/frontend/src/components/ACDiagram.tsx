@@ -166,26 +166,32 @@ export function ACDiagram() {
               strokeDasharray="8 4"
               opacity="0.6"
             />
-            <circle
-              cx="92"
-              cy="122"
-              r="18"
-              fill="oklch(0.78 0.08 245)"
-              stroke="oklch(0.58 0.10 245)"
-              strokeWidth="1.5"
-            />
-            {[0, 60, 120, 180, 240, 300].map((deg) => (
-              <line
-                key={deg}
-                x1={92 + Math.cos((deg * Math.PI) / 180) * 18}
-                y1={122 + Math.sin((deg * Math.PI) / 180) * 18}
-                x2={92 + Math.cos((deg * Math.PI) / 180) * 36}
-                y2={122 + Math.sin((deg * Math.PI) / 180) * 36}
-                stroke="oklch(0.5 0.12 245)"
-                strokeWidth="3"
-                strokeLinecap="round"
+            {/* Spinning fan blades — outdoor unit (absolute origin: 490+92=582, 40+122=162) */}
+            <g
+              className="outdoor-fan-spin"
+              style={{ transformOrigin: "582px 162px" }}
+            >
+              <circle
+                cx="92"
+                cy="122"
+                r="18"
+                fill="oklch(0.78 0.08 245)"
+                stroke="oklch(0.58 0.10 245)"
+                strokeWidth="1.5"
               />
-            ))}
+              {[0, 60, 120, 180, 240, 300].map((deg) => (
+                <line
+                  key={deg}
+                  x1={92 + Math.cos((deg * Math.PI) / 180) * 18}
+                  y1={122 + Math.sin((deg * Math.PI) / 180) * 18}
+                  x2={92 + Math.cos((deg * Math.PI) / 180) * 36}
+                  y2={122 + Math.sin((deg * Math.PI) / 180) * 36}
+                  stroke="oklch(0.5 0.12 245)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+              ))}
+            </g>
 
             {/* Condenser coil visual */}
             <rect
@@ -352,7 +358,7 @@ export function ACDiagram() {
                 fill="none"
               />
             ))}
-            {/* Blower visual */}
+            {/* Blower visual — spinning counter-clockwise (absolute origin: 45+167=212, 105+85=190) */}
             <circle
               cx="167"
               cy="85"
@@ -361,18 +367,23 @@ export function ACDiagram() {
               stroke="oklch(0.65 0.10 245)"
               strokeWidth="1.5"
             />
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
-              <line
-                key={deg}
-                x1={167 + Math.cos((deg * Math.PI) / 180) * 10}
-                y1={85 + Math.sin((deg * Math.PI) / 180) * 10}
-                x2={167 + Math.cos((deg * Math.PI) / 180) * 22}
-                y2={85 + Math.sin((deg * Math.PI) / 180) * 22}
-                stroke="oklch(0.48 0.12 245)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            ))}
+            <g
+              className="indoor-fan-spin"
+              style={{ transformOrigin: "212px 190px" }}
+            >
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
+                <line
+                  key={deg}
+                  x1={167 + Math.cos((deg * Math.PI) / 180) * 10}
+                  y1={85 + Math.sin((deg * Math.PI) / 180) * 10}
+                  x2={167 + Math.cos((deg * Math.PI) / 180) * 22}
+                  y2={85 + Math.sin((deg * Math.PI) / 180) * 22}
+                  stroke="oklch(0.48 0.12 245)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+              ))}
+            </g>
 
             <text
               x="102"
@@ -445,35 +456,51 @@ export function ACDiagram() {
           </g>
 
           {/* ===== PIPES ===== */}
+          {/* Cold pipe background glow */}
           <path
             d="M490,138 C452,138 418,132 370,130 C322,128 295,148 250,148"
             stroke="#BFDBFE"
-            strokeWidth="8"
+            strokeWidth="10"
             fill="none"
             strokeLinecap="round"
           />
+          {/* Cold pipe animated flow — jaate hue (outdoor → indoor) */}
           <path
             d="M490,138 C452,138 418,132 370,130 C322,128 295,148 250,148"
             stroke="#3B82F6"
-            strokeWidth="4"
+            strokeWidth="5"
             fill="none"
             strokeLinecap="round"
             className="cold-pipe"
           />
+          {/* Cold pipe direction arrow at midpoint */}
+          <polygon
+            points="370,124 362,128 362,120"
+            fill="#3B82F6"
+            opacity="0.85"
+          />
+          {/* Hot pipe background glow */}
           <path
             d="M250,168 C295,168 322,172 370,172 C418,172 452,168 490,162"
             stroke="#FEE2E2"
-            strokeWidth="8"
+            strokeWidth="10"
             fill="none"
             strokeLinecap="round"
           />
+          {/* Hot pipe animated flow — aate hue (indoor → outdoor) */}
           <path
             d="M250,168 C295,168 322,172 370,172 C418,172 452,168 490,162"
             stroke="#EF4444"
-            strokeWidth="4"
+            strokeWidth="5"
             fill="none"
             strokeLinecap="round"
             className="hot-pipe"
+          />
+          {/* Hot pipe direction arrow at midpoint */}
+          <polygon
+            points="370,178 378,174 378,182"
+            fill="#EF4444"
+            opacity="0.85"
           />
 
           {/* EXPANSION VALVE */}
@@ -533,23 +560,23 @@ export function ACDiagram() {
           {/* Pipe labels */}
           <text
             x="370"
-            y="120"
+            y="118"
             textAnchor="middle"
             fontSize="9"
             fontWeight="700"
             fill="#2563EB"
           >
-            ❄ Thanda Gas (Supply)
+            ❄ Thanda Gas — Jaate Hue →
           </text>
           <text
             x="370"
-            y="190"
+            y="192"
             textAnchor="middle"
             fontSize="9"
             fontWeight="700"
             fill="#DC2626"
           >
-            🔥 Garam Gas (Return)
+            ← Garam Gas — Aate Hue 🔥
           </text>
           <text
             x="370"
@@ -558,73 +585,101 @@ export function ACDiagram() {
             fontSize="8"
             fill="oklch(0.52 0.08 245)"
           >
-            R-22 / R-32 / R-10 Gas
+            R-22 / R-32 / R410 Gas
           </text>
 
-          {/* Cool air arrows */}
-          <g opacity="0.55">
-            {[8, 20, 32].map((off) => (
-              <path
-                key={off}
-                d={`M40,${117 + off} L14,${117 + off}`}
-                stroke="#3B82F6"
-                strokeWidth="1.5"
-                strokeDasharray="4 3"
-                fill="none"
+          {/* ❄️ Cool air from indoor unit — animated lines going LEFT */}
+          <g>
+            {[0, 1, 2, 3].map((i) => (
+              <line
+                key={i}
+                x1="40"
+                y1={112 + i * 10}
+                x2="6"
+                y2={112 + i * 10}
+                stroke="#60B3FF"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray="5 3"
+                className={`cool-air-out cool-air-out-${i + 1}`}
               />
             ))}
             <text
-              x="7"
-              y="140"
+              x="22"
+              y="106"
               textAnchor="middle"
-              fontSize="8"
-              fill="#3B82F6"
-              fontWeight="600"
+              fontSize="9"
+              fill="#2563EB"
+              fontWeight="700"
             >
-              Cool
+              ❄️
             </text>
             <text
-              x="7"
-              y="150"
+              x="22"
+              y="155"
               textAnchor="middle"
               fontSize="8"
-              fill="#3B82F6"
-              fontWeight="600"
+              fill="#2563EB"
+              fontWeight="700"
             >
-              Air
+              Thandi
+            </text>
+            <text
+              x="22"
+              y="165"
+              textAnchor="middle"
+              fontSize="8"
+              fill="#2563EB"
+              fontWeight="700"
+            >
+              Hawa
             </text>
           </g>
-          {/* Hot air arrows */}
-          <g opacity="0.55">
-            {[8, 20, 32].map((off) => (
-              <path
-                key={off}
-                d={`M678,${107 + off} L702,${107 + off}`}
-                stroke="#EF4444"
-                strokeWidth="1.5"
-                strokeDasharray="4 3"
-                fill="none"
+          {/* 🔥 Hot air from outdoor unit — animated lines going RIGHT */}
+          <g>
+            {[0, 1, 2, 3].map((i) => (
+              <line
+                key={i}
+                x1="675"
+                y1={102 + i * 10}
+                x2="710"
+                y2={102 + i * 10}
+                stroke="#FF6B35"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray="5 3"
+                className={`hot-air-out hot-air-out-${i + 1}`}
               />
             ))}
             <text
-              x="710"
-              y="130"
+              x="693"
+              y="96"
               textAnchor="middle"
-              fontSize="8"
-              fill="#EF4444"
-              fontWeight="600"
+              fontSize="9"
+              fill="#DC2626"
+              fontWeight="700"
             >
-              Hot
+              🔥
             </text>
             <text
-              x="710"
-              y="140"
+              x="693"
+              y="145"
               textAnchor="middle"
               fontSize="8"
-              fill="#EF4444"
-              fontWeight="600"
+              fill="#DC2626"
+              fontWeight="700"
             >
-              Air
+              Garam
+            </text>
+            <text
+              x="693"
+              y="155"
+              textAnchor="middle"
+              fontSize="8"
+              fill="#DC2626"
+              fontWeight="700"
+            >
+              Hawa
             </text>
           </g>
         </svg>

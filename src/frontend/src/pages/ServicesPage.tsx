@@ -69,7 +69,6 @@ const services = [
       "Sabhi brands ke liye",
       "Wall/window mounting",
       "Power check included",
-      "1 year installation warranty",
     ],
     duration: "2-3 hours",
   },
@@ -85,7 +84,6 @@ const services = [
       "Same day diagnosis",
       "Sabhi brands supported",
       "Genuine spare parts",
-      "Service guarantee",
     ],
     duration: "1-2 hours",
   },
@@ -112,12 +110,11 @@ const services = [
     title: "Gas Refilling",
     category: "Cleaning & Gas" as ServiceCategory,
     description:
-      "AC ki cooling power wapas laao — R-22, R-32 & R-10 gas available, leak check included.",
+      "AC ki cooling power wapas laao — R-22, R-32 & R410 gas available, leak check included.",
     features: [
-      "R-22, R-32 & R-10 gas available",
+      "R-22, R-32 & R410 gas available",
       "Leak check included",
       "Pressure testing",
-      "90 day guarantee",
     ],
     duration: "1-1.5 hours",
   },
@@ -128,7 +125,7 @@ const services = [
     title: "AC Deep Cleaning",
     category: "Cleaning & Gas" as ServiceCategory,
     description:
-      "Filter, coil, drain — poora AC andar se saaf, better cooling efficiency guaranteed.",
+      "Filter, coil, drain — poora AC andar se saaf, better cooling efficiency.",
     features: [
       "Deep jet cleaning",
       "Anti-bacterial spray",
@@ -149,7 +146,6 @@ const services = [
       "Careful dismounting",
       "Safe transport ready",
       "Reinstallation option",
-      "No damage guarantee",
     ],
     duration: "1-2 hours",
   },
@@ -310,25 +306,27 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
               हमारी Professional AC Services
             </h2>
             <div className="flex flex-wrap justify-center gap-3">
-              {["Expert Service", "Quality Guarantee", "7 Days Available"].map(
-                (badge) => (
+              {[
+                "Expert Service",
+                "Certified Technicians",
+                "7 Days Available",
+              ].map((badge) => (
+                <span
+                  key={badge}
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold"
+                  style={{
+                    background: "rgba(147,197,253,0.15)",
+                    border: "1px solid rgba(147,197,253,0.35)",
+                    color: "rgba(186,230,255,0.95)",
+                  }}
+                >
                   <span
-                    key={badge}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold"
-                    style={{
-                      background: "rgba(147,197,253,0.15)",
-                      border: "1px solid rgba(147,197,253,0.35)",
-                      color: "rgba(186,230,255,0.95)",
-                    }}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "#38bdf8" }}
-                    />
-                    {badge}
-                  </span>
-                ),
-              )}
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: "#38bdf8" }}
+                  />
+                  {badge}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -576,6 +574,42 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
                 WhatsApp Us
               </Button>
             </a>
+          </div>
+        </div>
+      </section>
+      {/* Video Section */}
+      <section className="py-16 sm:py-20 bg-muted/30 border-t border-border">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 scroll-reveal">
+            <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary bg-primary/8 px-4 py-1.5 rounded-full border border-primary/20 mb-3">
+              Hamara Kaam
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
+              🎬 Hamara Kaam Dekhein
+            </h2>
+            <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
+              Wave AC Services ki real service dekhein — professional
+              technicians, quality work, aur satisfied customers.
+            </p>
+          </div>
+          <div
+            className="scroll-reveal rounded-2xl overflow-hidden shadow-xl border border-border"
+            style={{ position: "relative", paddingTop: "56.25%" }}
+          >
+            <iframe
+              src="https://www.youtube.com/embed/EU-4_HeVw_I?autoplay=1&loop=1&playlist=EU-4_HeVw_I&mute=1&controls=1&rel=0&modestbranding=1"
+              title="Wave AC Services — Hamara Kaam"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
+            />
           </div>
         </div>
       </section>

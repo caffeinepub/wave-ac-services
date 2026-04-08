@@ -337,10 +337,10 @@
 /* Refrigerant flow — hot pipe (indoor → outdoor, right direction) */
 @keyframes refrigerantHot {
   0% {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 300;
   }
   100% {
-    stroke-dashoffset: 300;
+    stroke-dashoffset: 0;
   }
 }
 
@@ -368,15 +368,15 @@
 }
 
 .cold-pipe {
-  stroke-dasharray: 16 10;
+  stroke-dasharray: 18 8;
   stroke-dashoffset: 300;
-  animation: refrigerantCold 4s linear infinite;
+  animation: refrigerantCold 3s linear infinite;
 }
 
 .hot-pipe {
-  stroke-dasharray: 16 10;
-  stroke-dashoffset: 0;
-  animation: refrigerantHot 3s linear infinite;
+  stroke-dasharray: 18 8;
+  stroke-dashoffset: 300;
+  animation: refrigerantHot 3.5s linear infinite;
 }
 
 .ac-breath {
@@ -393,6 +393,110 @@
   transition: filter 0.3s ease;
 }
 
+/* ============================================
+   FAN SPIN ANIMATIONS
+   ============================================ */
+
+@keyframes fanSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fanSpinReverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Outdoor fan — clockwise, fast */
+.outdoor-fan-spin {
+  animation: fanSpin 1.2s linear infinite;
+}
+
+/* Indoor blower — counter-clockwise, slightly slower */
+.indoor-fan-spin {
+  animation: fanSpinReverse 1.8s linear infinite;
+}
+
+/* ============================================
+   COOL AIR (left) & HOT AIR (right) ANIMATIONS
+   ============================================ */
+
+@keyframes coolAirPulse {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 20;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.6;
+    stroke-dashoffset: -24;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -44;
+  }
+}
+
+@keyframes hotAirPulse {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: -20;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.6;
+    stroke-dashoffset: 24;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 44;
+  }
+}
+
+.cool-air-out {
+  animation: coolAirPulse 1.6s ease-in-out infinite;
+}
+.cool-air-out-1 {
+  animation-delay: 0s;
+}
+.cool-air-out-2 {
+  animation-delay: 0.3s;
+}
+.cool-air-out-3 {
+  animation-delay: 0.6s;
+}
+.cool-air-out-4 {
+  animation-delay: 0.9s;
+}
+
+.hot-air-out {
+  animation: hotAirPulse 1.6s ease-in-out infinite;
+}
+.hot-air-out-1 {
+  animation-delay: 0s;
+}
+.hot-air-out-2 {
+  animation-delay: 0.3s;
+}
+.hot-air-out-3 {
+  animation-delay: 0.6s;
+}
+.hot-air-out-4 {
+  animation-delay: 0.9s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cold-pipe,
   .hot-pipe,
@@ -406,6 +510,15 @@
   .hot-pipe {
     stroke-dasharray: none;
     opacity: 0.7;
+  }
+  .outdoor-fan-spin,
+  .indoor-fan-spin {
+    animation: none;
+  }
+  .cool-air-out,
+  .hot-air-out {
+    animation: none;
+    opacity: 0.5;
   }
 }
 

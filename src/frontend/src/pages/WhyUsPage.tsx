@@ -38,7 +38,7 @@ const trustPoints = [
     icon: Banknote,
     title: "Affordable Prices",
     description:
-      "Transparent, competitive pricing with no hidden charges. We provide detailed quotes before starting any work. Fair pricing guaranteed.",
+      "Transparent, competitive pricing with no hidden charges. We provide detailed quotes before starting any work. Fair pricing for everyone.",
   },
   {
     icon: Package,
@@ -126,7 +126,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
           <div className="flex flex-col md:flex-row gap-10 items-center scroll-reveal-scale">
             <div className="w-full md:w-48 flex-shrink-0 flex flex-col items-center gap-3">
               <img
-                src="https://i.ibb.co/tPhBCYKQ/photo.jpg"
+                src="https://i.ibb.co/tPhBCYKQ/tPhBCYKQ.jpg"
                 alt="Mohammad Dilshad - Founder & Owner"
                 className="w-40 h-40 rounded-full object-cover shadow-md border-4 border-white"
               />
