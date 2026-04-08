@@ -1,3 +1,4 @@
+import { AC3DLock } from "@/components/AC3DLock";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -291,6 +292,48 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* AC3DLock Showcase Strip */}
+      <section
+        className="py-12 sm:py-16 scroll-reveal-scale"
+        style={{
+          background:
+            "linear-gradient(160deg, oklch(0.18 0.10 245) 0%, oklch(0.24 0.13 245) 40%, oklch(0.20 0.11 250) 100%)",
+        }}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center gap-6">
+          {/* Heading */}
+          <div className="text-center">
+            <h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 text-3d-light leading-tight">
+              हमारी Professional AC Services
+            </h2>
+            <div className="flex flex-wrap justify-center gap-3">
+              {["Expert Service", "Quality Guarantee", "7 Days Available"].map(
+                (badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold"
+                    style={{
+                      background: "rgba(147,197,253,0.15)",
+                      border: "1px solid rgba(147,197,253,0.35)",
+                      color: "rgba(186,230,255,0.95)",
+                    }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "#38bdf8" }}
+                    />
+                    {badge}
+                  </span>
+                ),
+              )}
+            </div>
+          </div>
+
+          {/* 3D AC unit */}
+          <AC3DLock />
         </div>
       </section>
 

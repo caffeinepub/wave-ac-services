@@ -12,12 +12,48 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   CheckCircle,
   ExternalLink,
+  Loader2,
+  LocateFixed,
   MapPin,
   MessageCircle,
   Phone,
   Send,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+
+type GeoStatus = "idle" | "loading" | "success" | "error";
+
+async function reverseGeocode(lat: number, lon: number): Promise<string> {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`,
+    { headers: { "Accept-Language": "en" } },
+  );
+  if (!res.ok) throw new Error("Geocode failed");
+  const data = (await res.json()) as {
+    display_name?: string;
+    address?: {
+      road?: string;
+      suburb?: string;
+      neighbourhood?: string;
+      city_district?: string;
+      city?: string;
+      state?: string;
+    };
+  };
+  const a = data.address;
+  if (a) {
+    const parts = [
+      a.road,
+      a.neighbourhood || a.suburb || a.city_district,
+      a.city,
+      a.state,
+    ].filter(Boolean);
+    if (parts.length >= 2) return parts.join(", ");
+  }
+  if (data.display_name)
+    return data.display_name.split(",").slice(0, 4).join(", ");
+  throw new Error("No address");
+}
 
 type FormState = {
   name: string;
@@ -44,6 +80,43 @@ export function ContactPage({
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [geoStatus, setGeoStatus] = useState<GeoStatus>("idle");
+  const [geoError, setGeoError] = useState<string | null>(null);
+
+  const handleUseLocation = () => {
+    if (!navigator.geolocation) {
+      setGeoError("Location nahin mili, please manually type karein");
+      return;
+    }
+    setGeoStatus("loading");
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const addr = await reverseGeocode(
+            pos.coords.latitude,
+            pos.coords.longitude,
+          );
+          setForm((prev) => ({ ...prev, address: addr }));
+          setGeoStatus("success");
+          setTimeout(() => setGeoStatus("idle"), 2500);
+        } catch {
+          setForm((prev) => ({
+            ...prev,
+            address: `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)} (please verify)`,
+          }));
+          setGeoStatus("success");
+          setTimeout(() => setGeoStatus("idle"), 2500);
+        }
+      },
+      () => {
+        setGeoStatus("error");
+        setGeoError("Location nahin mili, please manually type karein");
+        setTimeout(() => setGeoStatus("idle"), 3000);
+      },
+      { timeout: 8000 },
+    );
+  };
 
   useEffect(() => {
     if (preSelectedService) {
@@ -322,13 +395,41 @@ export function ContactPage({
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label
-                      htmlFor="address"
-                      className="text-sm font-semibold flex items-center gap-1.5"
-                    >
-                      <MapPin className="w-3.5 h-3.5 text-primary" />
-                      Aapka Address <span className="text-destructive">*</span>
-                    </Label>
+                    <div className="flex items-center justify-between">
+                      <Label
+                        htmlFor="address"
+                        className="text-sm font-semibold flex items-center gap-1.5"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-primary" />
+                        Aapka Address{" "}
+                        <span className="text-destructive">*</span>
+                      </Label>
+                      <button
+                        type="button"
+                        onClick={handleUseLocation}
+                        disabled={geoStatus === "loading"}
+                        data-ocid="contact.use_location_btn"
+                        className={[
+                          "inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border transition-all duration-200 disabled:opacity-60",
+                          geoStatus === "success"
+                            ? "bg-green-100 text-green-700 border-green-300"
+                            : geoStatus === "error"
+                              ? "bg-red-100 text-red-600 border-red-300"
+                              : "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100",
+                        ].join(" ")}
+                      >
+                        {geoStatus === "loading" ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <LocateFixed className="w-3 h-3" />
+                        )}
+                        {geoStatus === "loading"
+                          ? "Dhundh raha hai..."
+                          : geoStatus === "success"
+                            ? "✓ Mila!"
+                            : "📍 Location Use Karein"}
+                      </button>
+                    </div>
                     <Input
                       id="address"
                       value={form.address}
@@ -338,6 +439,9 @@ export function ContactPage({
                       data-ocid="contact.address_input"
                       className="border-border focus:border-primary"
                     />
+                    {geoError && geoStatus === "error" && (
+                      <p className="text-xs text-red-500 mt-1">{geoError}</p>
+                    )}
                   </div>
 
                   <div className="space-y-1.5">

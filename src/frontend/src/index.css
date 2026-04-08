@@ -274,6 +274,53 @@
 }
 
 /* ============================================
+   AC DIAGRAM 3D PERSPECTIVE WRAPPER
+   ============================================ */
+
+/* Pendulum auto-rotation: gentle -5deg to +5deg every 4s */
+@keyframes acPendulum {
+  0%,
+  100% {
+    transform: perspective(800px) rotateY(-5deg) rotateX(2deg);
+  }
+  50% {
+    transform: perspective(800px) rotateY(5deg) rotateX(-2deg);
+  }
+}
+
+.ac-3d-wrapper {
+  perspective: 800px;
+  transform-style: preserve-3d;
+  display: block;
+  border-radius: 1.25rem;
+  /* Layered glow for depth */
+  box-shadow: 0 8px 24px rgba(0, 80, 200, 0.12), 0 24px 64px
+    rgba(0, 80, 200, 0.14), 0 40px 80px rgba(0, 80, 200, 0.08), 0 0 0 1px
+    rgba(59, 130, 246, 0.1);
+  animation: acPendulum 4s ease-in-out infinite;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.ac-3d-wrapper:hover {
+  animation-play-state: paused;
+  transform: perspective(800px) rotateX(8deg) rotateY(-8deg) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0, 80, 200, 0.2), 0 32px 80px
+    rgba(0, 80, 200, 0.22), 0 56px 100px rgba(0, 80, 200, 0.12), 0 0 0 1px
+    rgba(59, 130, 246, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-3d-wrapper {
+    animation: none;
+    transform: none;
+  }
+  .ac-3d-wrapper:hover {
+    transform: none;
+    animation: none;
+  }
+}
+
+/* ============================================
    AC DIAGRAM ANIMATIONS
    ============================================ */
 
@@ -462,5 +509,190 @@
   .scroll-reveal-delay-4,
   .scroll-reveal-delay-5 {
     transition-delay: 0s;
+  }
+}
+
+/* ============================================
+   AC3DLock Component
+   ============================================ */
+
+/* Outer centering wrapper */
+.ac3d-lock-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1.5rem 0 2rem;
+}
+
+/* The 3D-locked unit container */
+.ac3d-lock-unit {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  /* Fixed isometric-like angle — locked in 3D space */
+  transform: perspective(900px) rotateX(-12deg) rotateY(-18deg);
+  transform-style: preserve-3d;
+  /* Neon blue border glow — pulses to signal "locked" */
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.55))
+    drop-shadow(0 0 32px rgba(59, 130, 246, 0.35))
+    drop-shadow(0 12px 40px rgba(0, 50, 150, 0.5));
+  animation: ac3dLevitate 3.5s ease-in-out infinite alternate;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+  cursor: default;
+}
+
+.ac3d-lock-outer:hover .ac3d-lock-unit {
+  transform: perspective(900px) rotateX(-18deg) rotateY(-25deg);
+  filter: drop-shadow(0 0 22px rgba(56, 189, 248, 0.85))
+    drop-shadow(0 0 48px rgba(59, 130, 246, 0.55))
+    drop-shadow(0 16px 56px rgba(0, 50, 150, 0.65));
+  animation-play-state: paused;
+}
+
+/* Levitate: float up-down + slight Z rock */
+@keyframes ac3dLevitate {
+  0% {
+    transform: perspective(900px) rotateX(-12deg) rotateY(-18deg)
+      translateY(0px) rotateZ(0deg);
+  }
+  50% {
+    transform: perspective(900px) rotateX(-12deg) rotateY(-18deg)
+      translateY(-10px) rotateZ(1deg);
+  }
+  100% {
+    transform: perspective(900px) rotateX(-12deg) rotateY(-18deg)
+      translateY(-12px) rotateZ(-1.5deg);
+  }
+}
+
+/* Perspective floor shadow — "locked in 3D space" grid */
+.ac3d-floor-shadow {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(59, 130, 246, 0.28) 0%,
+    rgba(37, 99, 235, 0.14) 50%,
+    transparent 80%
+  );
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* Pulsing neon ring glow */
+.ac3d-glow-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(56, 189, 248, 0.6);
+  animation: ac3dGlowPulse 2.2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes ac3dGlowPulse {
+  0% {
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.2), inset 0 0 8px
+      rgba(56, 189, 248, 0.08);
+  }
+  100% {
+    border-color: rgba(56, 189, 248, 0.9);
+    box-shadow: 0 0 22px rgba(56, 189, 248, 0.5), inset 0 0 12px
+      rgba(56, 189, 248, 0.15);
+  }
+}
+
+/* SVG unit sizing */
+.ac3d-svg {
+  width: min(340px, 90vw);
+  height: auto;
+  display: block;
+}
+
+/* Airflow container */
+.ac3d-airflow {
+  position: relative;
+  width: min(340px, 90vw);
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 10%;
+}
+
+/* Base air line */
+.ac3d-air-line {
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(147, 197, 253, 0.7) 30%,
+    rgba(186, 230, 255, 0.55) 70%,
+    transparent 100%
+  );
+  opacity: 0;
+  animation: ac3dAirFlow 1.8s ease-out infinite;
+}
+
+.ac3d-air-1 {
+  width: 70%;
+  animation-delay: 0s;
+}
+.ac3d-air-2 {
+  width: 85%;
+  animation-delay: 0.4s;
+}
+.ac3d-air-3 {
+  width: 60%;
+  animation-delay: 0.8s;
+}
+.ac3d-air-4 {
+  width: 75%;
+  animation-delay: 1.2s;
+}
+
+@keyframes ac3dAirFlow {
+  0% {
+    opacity: 0;
+    transform: translateX(-20%);
+  }
+  20% {
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0.5;
+    transform: translateX(12%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac3d-lock-unit {
+    animation: none;
+    transform: perspective(900px) rotateX(-12deg) rotateY(-18deg);
+  }
+  .ac3d-lock-outer:hover .ac3d-lock-unit {
+    animation: none;
+  }
+  .ac3d-glow-ring {
+    animation: none;
+    border-color: rgba(56, 189, 248, 0.6);
+  }
+  .ac3d-air-line {
+    animation: none;
+    opacity: 0.4;
   }
 }

@@ -14,6 +14,8 @@ import {
   CheckCircle2,
   Clock,
   Droplets,
+  Loader2,
+  LocateFixed,
   MapPin,
   MessageCircle,
   Phone,
@@ -24,13 +26,49 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type GeoStatus = "idle" | "loading" | "success" | "error";
+
+async function reverseGeocode(lat: number, lon: number): Promise<string> {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`,
+    { headers: { "Accept-Language": "en" } },
+  );
+  if (!res.ok) throw new Error("Geocode failed");
+  const data = (await res.json()) as {
+    display_name?: string;
+    address?: {
+      road?: string;
+      suburb?: string;
+      neighbourhood?: string;
+      city_district?: string;
+      city?: string;
+      state?: string;
+    };
+  };
+  const a = data.address;
+  if (a) {
+    const parts = [
+      a.road,
+      a.neighbourhood || a.suburb || a.city_district,
+      a.city,
+      a.state,
+    ].filter(Boolean);
+    if (parts.length >= 2) return parts.join(", ");
+  }
+  if (data.display_name)
+    return data.display_name.split(",").slice(0, 4).join(", ");
+  throw new Error("No address");
+}
 import { ACDiagram } from "../components/ACDiagram";
 
 type Page = "home" | "services" | "why-us" | "testimonials" | "contact";
 
 interface HomePageProps {
   onNavigate: (page: Page) => void;
+  incomingService?: string;
+  onClearIncomingService?: () => void;
 }
 
 const serviceCategories = [
@@ -129,7 +167,11 @@ type FormState = {
   service: string;
 };
 
-export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
+export function HomePage({
+  onNavigate: _onNavigate,
+  incomingService,
+  onClearIncomingService,
+}: HomePageProps) {
   const [form, setForm] = useState<FormState>({
     name: "",
     phone: "",
@@ -138,7 +180,60 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
   });
   const [submitted, setSubmitted] = useState(false);
   const [clickedCard, setClickedCard] = useState<string | null>(null);
+  const [geoStatus, setGeoStatus] = useState<GeoStatus>("idle");
+  const [geoError, setGeoError] = useState<string | null>(null);
+
+  const handleUseLocation = () => {
+    if (!navigator.geolocation) {
+      setGeoError("Location nahin mili, please manually type karein");
+      return;
+    }
+    setGeoStatus("loading");
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const addr = await reverseGeocode(
+            pos.coords.latitude,
+            pos.coords.longitude,
+          );
+          setForm((prev) => ({ ...prev, address: addr }));
+          setGeoStatus("success");
+          setTimeout(() => setGeoStatus("idle"), 2500);
+        } catch {
+          setForm((prev) => ({
+            ...prev,
+            address: `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)} (please verify)`,
+          }));
+          setGeoStatus("success");
+          setTimeout(() => setGeoStatus("idle"), 2500);
+        }
+      },
+      () => {
+        setGeoStatus("error");
+        setGeoError("Location nahin mili, please manually type karein");
+        setTimeout(() => setGeoStatus("idle"), 3000);
+      },
+      { timeout: 8000 },
+    );
+  };
   const bookingRef = useRef<HTMLElement>(null);
+  const clearServiceRef = useRef(onClearIncomingService);
+  clearServiceRef.current = onClearIncomingService;
+
+  // When navigating from another page with a pre-selected service, auto-fill and scroll
+  useEffect(() => {
+    if (incomingService && incomingService.trim() !== "") {
+      setForm((prev) => ({ ...prev, service: incomingService }));
+      setTimeout(() => {
+        bookingRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 300);
+      clearServiceRef.current?.();
+    }
+  }, [incomingService]);
 
   const serviceTitleMap: Record<string, string> = {
     "AC Installation": "AC Installation",
@@ -487,44 +582,46 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       {/* AC Diagram Section */}
       <section id="ac-diagram" className="py-16 sm:py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-reveal-scale">
-          <ACDiagram />
+          <div className="ac-3d-wrapper">
+            <ACDiagram />
+          </div>
         </div>
       </section>
 
       {/* Quick Booking Section */}
       <section
         ref={bookingRef}
-        className="py-16 sm:py-20 bg-card border-y border-border"
+        className="py-20 sm:py-28 bg-card border-y border-border"
       >
-        <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 scroll-reveal">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
-              Book a Service
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 scroll-reveal">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-foreground mb-4 text-3d">
+              📋 Book a Service
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base">
+            <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
               Fill in your details and we'll confirm via WhatsApp. Service
-              available any day within 7 days.
+              available any day within 7 days — 10 AM to 7 PM.
             </p>
           </div>
 
           {submitted ? (
-            <div className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center scroll-reveal-scale">
+            <div className="flex flex-col items-center justify-center p-16 rounded-3xl border border-green-200 bg-green-50 text-center scroll-reveal-scale">
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
                 style={{ backgroundColor: "#25D366" }}
               >
-                <Send className="w-8 h-8 text-white" />
+                <Send className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-foreground mb-2">
+              <h3 className="text-2xl font-bold text-foreground mb-3">
                 Booking Request Sent!
               </h3>
-              <p className="text-muted-foreground text-sm max-w-xs">
+              <p className="text-muted-foreground text-base max-w-sm">
                 Your request has been sent via WhatsApp. Mohammad Dilshad will
                 contact you shortly.
               </p>
               <Button
                 onClick={() => setSubmitted(false)}
-                className="mt-6 font-bold rounded-full px-8 py-5 text-base text-white hover:opacity-90 shadow-sm"
+                className="mt-8 font-bold rounded-full px-10 py-6 text-lg text-white hover:opacity-90 shadow-sm"
                 style={{ backgroundColor: "#25D366" }}
               >
                 Book Another Service
@@ -533,11 +630,11 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-5 bg-background rounded-2xl border border-border p-7 form-3d scroll-reveal"
+              className="space-y-8 bg-background rounded-3xl border border-border p-10 sm:p-12 form-3d scroll-reveal"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="space-y-1.5">
-                  <Label htmlFor="hname" className="text-sm font-semibold">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+                <div className="space-y-2">
+                  <Label htmlFor="hname" className="text-base font-semibold">
                     Full Name <span className="text-destructive">*</span>
                   </Label>
                   <Input
@@ -546,11 +643,11 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                     onChange={handleChange("name")}
                     placeholder="Your full name"
                     required
-                    className="border-border focus:border-primary"
+                    className="h-14 text-lg border-border focus:border-primary"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="hphone" className="text-sm font-semibold">
+                <div className="space-y-2">
+                  <Label htmlFor="hphone" className="text-base font-semibold">
                     Phone Number <span className="text-destructive">*</span>
                   </Label>
                   <Input
@@ -560,32 +657,62 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                     onChange={handleChange("phone")}
                     placeholder="+91-XXXXXXXXXX"
                     required
-                    className="border-border focus:border-primary"
+                    className="h-14 text-lg border-border focus:border-primary"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label
-                  htmlFor="haddress"
-                  className="text-sm font-semibold flex items-center gap-1.5"
-                >
-                  <MapPin className="w-3.5 h-3.5 text-primary" />
-                  Aapka Address <span className="text-destructive">*</span>
-                </Label>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label
+                    htmlFor="haddress"
+                    className="text-base font-semibold flex items-center gap-2"
+                  >
+                    <MapPin className="w-4 h-4 text-primary" />
+                    Aapka Address <span className="text-destructive">*</span>
+                  </Label>
+                  <button
+                    type="button"
+                    onClick={handleUseLocation}
+                    disabled={geoStatus === "loading"}
+                    data-ocid="home.use_location_btn"
+                    className={[
+                      "inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full border transition-all duration-200 disabled:opacity-60",
+                      geoStatus === "success"
+                        ? "bg-green-100 text-green-700 border-green-300"
+                        : geoStatus === "error"
+                          ? "bg-red-100 text-red-600 border-red-300"
+                          : "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100",
+                    ].join(" ")}
+                  >
+                    {geoStatus === "loading" ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <LocateFixed className="w-4 h-4" />
+                    )}
+                    {geoStatus === "loading"
+                      ? "Dhundh raha hai..."
+                      : geoStatus === "success"
+                        ? "✓ Mila!"
+                        : "📍 Location Use Karein"}
+                  </button>
+                </div>
                 <Input
                   id="haddress"
                   value={form.address}
                   onChange={handleChange("address")}
                   placeholder="Ghar ka address likhein (mohalla, area, Delhi)"
                   required
-                  className="border-border focus:border-primary"
+                  className="h-14 text-lg border-border focus:border-primary"
                   data-ocid="home.address_input"
                 />
+                {geoError && geoStatus === "error" && (
+                  <p className="text-sm text-red-500 mt-1">{geoError}</p>
+                )}
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="hservice" className="text-sm font-semibold">
+              <div className="space-y-2">
+                <Label htmlFor="hservice" className="text-base font-semibold">
                   Service Type <span className="text-destructive">*</span>
                 </Label>
                 <Select
@@ -593,7 +720,10 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                   onValueChange={handleServiceChange}
                   required
                 >
-                  <SelectTrigger id="hservice" className="border-border">
+                  <SelectTrigger
+                    id="hservice"
+                    className="h-14 text-lg border-border"
+                  >
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
@@ -620,15 +750,15 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
               <Button
                 type="submit"
-                className="w-full font-bold text-base py-6 rounded-full text-white hover:opacity-90 shadow-sm"
+                className="w-full font-bold text-xl py-8 rounded-full text-white hover:opacity-90 shadow-md"
                 style={{ backgroundColor: "#25D366" }}
                 data-ocid="home.booking_submit"
               >
-                <MessageCircle className="w-5 h-5 mr-2" />
+                <MessageCircle className="w-7 h-7 mr-3" />
                 Book via WhatsApp
               </Button>
 
-              <p className="text-xs text-center text-muted-foreground">
+              <p className="text-sm text-center text-muted-foreground">
                 You'll be redirected to WhatsApp to confirm with Mohammad
                 Dilshad.
               </p>

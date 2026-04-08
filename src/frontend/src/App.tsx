@@ -20,13 +20,19 @@ export default function App() {
 
   const handleNavigateToBooking = (service: string) => {
     setSelectedService(service);
-    setCurrentPage("contact");
+    setCurrentPage("home");
   };
 
   const renderPage = () => {
     switch (currentPage) {
       case "home":
-        return <HomePage onNavigate={setCurrentPage} />;
+        return (
+          <HomePage
+            onNavigate={setCurrentPage}
+            incomingService={selectedService}
+            onClearIncomingService={() => setSelectedService("")}
+          />
+        );
       case "services":
         return (
           <ServicesPage
