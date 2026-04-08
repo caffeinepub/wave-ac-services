@@ -588,6 +588,40 @@ export function HomePage({
         </div>
       </section>
 
+      {/* Video Section */}
+      <section className="py-16 sm:py-20 bg-muted/30 border-y border-border">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 scroll-reveal">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3 text-3d">
+              🎬 Hamara Kaam Dekhein
+            </h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
+              Wave AC Services ki real service dekhein — professional
+              technicians, quality work, aur satisfied customers.
+            </p>
+          </div>
+          <div
+            className="scroll-reveal rounded-2xl overflow-hidden shadow-xl border border-border"
+            style={{ position: "relative", paddingTop: "56.25%" }}
+          >
+            <iframe
+              src="https://www.youtube.com/embed/EU-4_HeVw_I?autoplay=1&loop=1&playlist=EU-4_HeVw_I&mute=1&controls=1&rel=0&modestbranding=1"
+              title="Wave AC Services — Hamara Kaam"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Quick Booking Section */}
       <section
         ref={bookingRef}
