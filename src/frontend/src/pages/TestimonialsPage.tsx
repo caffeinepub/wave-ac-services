@@ -363,7 +363,7 @@ export function TestimonialsPage() {
                 <div
                   key={name}
                   data-ocid={`testimonials.item.${idx + 1}`}
-                  className="bg-white rounded-2xl border border-border shadow-card p-6 flex flex-col hover:shadow-md transition-shadow duration-200"
+                  className={`bg-white rounded-2xl border border-border shadow-card p-6 flex flex-col hover:shadow-md transition-shadow duration-200 scroll-reveal scroll-reveal-delay-${Math.min(idx + 1, 5)}`}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
@@ -417,7 +417,7 @@ export function TestimonialsPage() {
       >
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           {/* Section header */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-10 scroll-reveal">
             <div className="inline-flex items-center gap-2 bg-brand-pale text-primary rounded-full px-4 py-1.5 text-sm font-medium mb-4">
               <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
               Apni Raay Dein
@@ -434,7 +434,7 @@ export function TestimonialsPage() {
           {/* Form card */}
           <div
             data-ocid="review.card"
-            className="bg-white rounded-2xl border border-border shadow-card p-6 sm:p-8"
+            className="bg-white rounded-2xl border border-border shadow-card p-6 sm:p-8 scroll-reveal-scale"
           >
             <ReviewForm />
           </div>

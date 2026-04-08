@@ -117,10 +117,26 @@
 }
 
 /* ============================================
-   3D EFFECTS — Cards, Buttons, Sections
+   3D EFFECTS — Strong at top, flat at bottom
    ============================================ */
 
-/* 3D card base — apply to service cards, why-us cards, testimonial cards */
+/* ---- TOP-PAGE: premium card lift for first-row service cards ---- */
+.card-3d-top {
+  perspective: 900px;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08), 0 10px 28px rgba(0, 0, 0, 0.14), 0
+    20px 48px rgba(0, 0, 0, 0.1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow
+    0.28s ease;
+}
+
+.card-3d-top:hover {
+  transform: translateY(-14px) scale(1.04);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 24px 52px rgba(0, 0, 0, 0.2), 0
+    40px 72px rgba(0, 0, 0, 0.12);
+}
+
+/* ---- MID-PAGE: standard card lift ---- */
 .card-3d {
   perspective: 1000px;
   transform-style: preserve-3d;
@@ -136,19 +152,36 @@
     24px 48px rgba(0, 0, 0, 0.1);
 }
 
-/* 3D lift light — for smaller cards and team member cards */
+/* ---- BOTTOM-PAGE: flat card, no lift ---- */
 .card-3d-sm {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow
-    0.25s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.2s ease;
 }
 
 .card-3d-sm:hover {
-  transform: translateY(-5px) scale(1.015);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 12px 28px rgba(0, 0, 0, 0.13);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 3D button press effect */
+/* ---- HERO buttons: dramatic press with large shadow ---- */
+.btn-3d-hero {
+  box-shadow: 0 6px 0px rgba(0, 0, 0, 0.28), 0 10px 28px rgba(0, 0, 0, 0.22), 0
+    20px 44px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow
+    0.15s ease;
+}
+
+.btn-3d-hero:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 9px 0px rgba(0, 0, 0, 0.26), 0 16px 36px rgba(0, 0, 0, 0.24), 0
+    28px 52px rgba(0, 0, 0, 0.14);
+}
+
+.btn-3d-hero:active {
+  transform: translateY(3px) scale(0.98);
+  box-shadow: 0 2px 0px rgba(0, 0, 0, 0.22), 0 4px 10px rgba(0, 0, 0, 0.14);
+}
+
+/* ---- Standard mid-page button press ---- */
 .btn-3d {
   box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2), 0 6px 16px rgba(0, 0, 0, 0.15);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -170,39 +203,264 @@
 }
 
 .text-3d-light {
-  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.3), 0 2px 10px
-    rgba(255, 255, 255, 0.15);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 4px 20px rgba(0, 0, 0, 0.25), 0
+    1px 0px rgba(255, 255, 255, 0.12);
 }
 
-/* Navbar 3D shadow */
+/* Navbar — deeper floating shadow for strong top-of-page 3D feel */
 .navbar-3d {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.1), 0
-    8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.12), 0
+    12px 32px rgba(0, 0, 0, 0.1), 0 24px 48px rgba(0, 0, 0, 0.06);
 }
 
-/* Booking form 3D container */
+/* Booking form — flat, clean, no heavy 3D depth */
 .form-3d {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.1), 0
-    20px 48px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-/* Hero heading perspective 3D */
+/* Hero heading — strong perspective tilt toward viewer */
 .hero-3d {
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.38))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.22));
+  transform: perspective(800px) rotateX(-3deg);
+  transform-origin: bottom center;
+  display: inline-block;
+}
+
+/* Hero float animation */
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: perspective(800px) rotateX(-3deg) translateY(0px);
+  }
+  50% {
+    transform: perspective(800px) rotateX(-3deg) translateY(-8px);
+  }
+}
+
+.hero-float {
+  animation: heroFloat 4s ease-in-out infinite;
+  transform-origin: bottom center;
+  display: inline-block;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .card-3d-top,
   .card-3d,
   .card-3d-sm,
+  .btn-3d-hero,
   .btn-3d {
     transition: none;
   }
+  .card-3d-top:hover,
   .card-3d:hover,
   .card-3d-sm:hover {
     transform: none;
   }
+  .btn-3d-hero:hover,
+  .btn-3d-hero:active,
   .btn-3d:hover,
   .btn-3d:active {
     transform: none;
+  }
+  .hero-float {
+    animation: none;
+    transform: none;
+  }
+  .hero-3d {
+    filter: none;
+    transform: none;
+  }
+}
+
+/* ============================================
+   AC DIAGRAM ANIMATIONS
+   ============================================ */
+
+/* Refrigerant flow — cold pipe (outdoor → indoor, left direction) */
+@keyframes refrigerantCold {
+  0% {
+    stroke-dashoffset: 300;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Refrigerant flow — hot pipe (indoor → outdoor, right direction) */
+@keyframes refrigerantHot {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 300;
+  }
+}
+
+/* Breathing / zoom pulse for the whole diagram */
+@keyframes acBreath {
+  0%,
+  100% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+/* Tooltip entrance */
+@keyframes tooltipIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.cold-pipe {
+  stroke-dasharray: 16 10;
+  stroke-dashoffset: 300;
+  animation: refrigerantCold 4s linear infinite;
+}
+
+.hot-pipe {
+  stroke-dasharray: 16 10;
+  stroke-dashoffset: 0;
+  animation: refrigerantHot 3s linear infinite;
+}
+
+.ac-breath {
+  animation: acBreath 4s ease-in-out infinite;
+}
+
+.ac-tooltip-in {
+  animation: tooltipIn 0.25s ease-out forwards;
+}
+
+/* Glow highlight on selected AC part */
+.ac-part-glow {
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.55));
+  transition: filter 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cold-pipe,
+  .hot-pipe,
+  .ac-breath {
+    animation: none;
+  }
+  .cold-pipe {
+    stroke-dasharray: none;
+    opacity: 0.7;
+  }
+  .hot-pipe {
+    stroke-dasharray: none;
+    opacity: 0.7;
+  }
+}
+
+/* ============================================
+   SCROLL-REVEAL ANIMATIONS
+   ============================================ */
+
+/* Base — hidden state */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px) rotateX(8deg);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: bottom center;
+  will-change: opacity, transform;
+}
+
+/* Slide in from left */
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-60px) rotateY(-12deg);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: right center;
+  will-change: opacity, transform;
+}
+
+/* Slide in from right */
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(60px) rotateY(12deg);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left center;
+  will-change: opacity, transform;
+}
+
+/* Scale in */
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s
+    cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Visible state — applied by IntersectionObserver */
+.scroll-reveal.visible,
+.scroll-reveal-left.visible,
+.scroll-reveal-right.visible,
+.scroll-reveal-scale.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger delays */
+.scroll-reveal-delay-1,
+.scroll-reveal-left.scroll-reveal-delay-1,
+.scroll-reveal-right.scroll-reveal-delay-1,
+.scroll-reveal-scale.scroll-reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.scroll-reveal-delay-2,
+.scroll-reveal-left.scroll-reveal-delay-2,
+.scroll-reveal-right.scroll-reveal-delay-2,
+.scroll-reveal-scale.scroll-reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.scroll-reveal-delay-3,
+.scroll-reveal-left.scroll-reveal-delay-3,
+.scroll-reveal-right.scroll-reveal-delay-3,
+.scroll-reveal-scale.scroll-reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+.scroll-reveal-delay-4,
+.scroll-reveal-left.scroll-reveal-delay-4,
+.scroll-reveal-right.scroll-reveal-delay-4,
+.scroll-reveal-scale.scroll-reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+.scroll-reveal-delay-5,
+.scroll-reveal-left.scroll-reveal-delay-5,
+.scroll-reveal-right.scroll-reveal-delay-5,
+.scroll-reveal-scale.scroll-reveal-delay-5 {
+  transition-delay: 0.5s;
+}
+
+/* Respect reduced motion — instantly show without animation */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scroll-reveal-delay-1,
+  .scroll-reveal-delay-2,
+  .scroll-reveal-delay-3,
+  .scroll-reveal-delay-4,
+  .scroll-reveal-delay-5 {
+    transition-delay: 0s;
   }
 }

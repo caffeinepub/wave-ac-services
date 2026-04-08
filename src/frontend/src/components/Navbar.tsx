@@ -82,7 +82,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
           <Button
             onClick={() => handleNav("contact")}
             data-ocid="nav.primary_button"
-            className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 text-sm font-semibold shadow-sm"
+            className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 text-sm font-semibold btn-3d"
           >
             Book a Service
           </Button>

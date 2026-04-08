@@ -99,7 +99,11 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
               <div
                 key={title}
                 data-ocid={`whyus.item.${idx + 1}`}
-                className="bg-card rounded-2xl border border-border p-7 card-3d"
+                className={[
+                  "bg-card rounded-2xl border border-border p-7 card-3d",
+                  idx % 2 === 0 ? "scroll-reveal-left" : "scroll-reveal-right",
+                  `scroll-reveal-delay-${Math.min((idx % 3) + 1, 5)}`,
+                ].join(" ")}
               >
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
                   <Icon className="w-7 h-7 text-primary" />
@@ -119,7 +123,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
       {/* About section */}
       <section className="py-16 sm:py-20 bg-secondary/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-10 items-center">
+          <div className="flex flex-col md:flex-row gap-10 items-center scroll-reveal-scale">
             <div className="w-full md:w-48 flex-shrink-0 flex flex-col items-center gap-3">
               <img
                 src="https://i.ibb.co/tPhBCYKQ/photo.jpg"
@@ -200,7 +204,7 @@ export function WhyUsPage({ onNavigate }: WhyUsPageProps) {
               <div
                 key={id}
                 data-ocid={`team.item.${idx + 1}`}
-                className="bg-secondary/30 rounded-xl p-6 text-center card-3d-sm"
+                className={`bg-secondary/30 rounded-xl p-6 text-center card-3d-sm scroll-reveal scroll-reveal-delay-${idx + 1}`}
               >
                 <img
                   src={photo}

@@ -111,11 +111,11 @@ export function ContactPage({
             {/* Contact Details */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-foreground mb-5 text-3d">
+                <h2 className="text-xl font-bold text-foreground mb-5 text-3d scroll-reveal">
                   Get In Touch
                 </h2>
                 <ul className="space-y-4">
-                  <li>
+                  <li className="scroll-reveal-left scroll-reveal-delay-1">
                     <a
                       href="tel:+919871984736"
                       data-ocid="contact.primary_button"
@@ -137,7 +137,7 @@ export function ContactPage({
                       </div>
                     </a>
                   </li>
-                  <li>
+                  <li className="scroll-reveal-left scroll-reveal-delay-2">
                     <a
                       href={waServiceUrl}
                       target="_blank"
@@ -167,7 +167,7 @@ export function ContactPage({
                       </div>
                     </a>
                   </li>
-                  <li className="flex items-start gap-4 p-4 rounded-xl border border-border card-3d-sm">
+                  <li className="flex items-start gap-4 p-4 rounded-xl border border-border card-3d-sm scroll-reveal-left scroll-reveal-delay-3">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <MapPin className="w-6 h-6 text-primary" />
                     </div>
@@ -187,7 +187,7 @@ export function ContactPage({
               </div>
 
               {/* Quick Call + WhatsApp big buttons */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 scroll-reveal-scale scroll-reveal-delay-2">
                 <a href="tel:+919871984736" className="block">
                   <Button
                     size="lg"
@@ -216,7 +216,7 @@ export function ContactPage({
 
               {/* Map card */}
               <div
-                className="rounded-xl border border-border overflow-hidden card-3d-sm"
+                className="rounded-xl border border-border overflow-hidden card-3d-sm scroll-reveal-scale scroll-reveal-delay-3"
                 data-ocid="contact.panel"
               >
                 <div
@@ -245,7 +245,7 @@ export function ContactPage({
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 scroll-reveal-right">
               <h2 className="text-xl font-bold text-foreground mb-5 text-3d">
                 Book a Service
               </h2>

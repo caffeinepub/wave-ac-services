@@ -25,6 +25,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useRef, useState } from "react";
+import { ACDiagram } from "../components/ACDiagram";
 
 type Page = "home" | "services" | "why-us" | "testimonials" | "contact";
 
@@ -248,12 +249,14 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <Zap className="w-3.5 h-3.5" />
                 Delhi's #1 AC Service Provider
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-bold text-white leading-tight mb-4 hero-3d text-3d-light">
-                Expert AC Services
-                <span className="block text-white/80 text-3xl sm:text-4xl lg:text-[40px] font-semibold mt-1">
-                  At Your Doorstep
-                </span>
-              </h1>
+              <div className="hero-float">
+                <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-bold text-white leading-tight mb-4 hero-3d text-3d-light">
+                  Expert AC Services
+                  <span className="block text-white/80 text-3xl sm:text-4xl lg:text-[40px] font-semibold mt-1">
+                    At Your Doorstep
+                  </span>
+                </h1>
+              </div>
               <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
                 Installation, repair, and maintenance by certified technicians.
                 Available 7 days a week across Delhi NCR.
@@ -262,7 +265,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <a href="tel:+919871984736" data-ocid="hero.primary_button">
                   <Button
                     size="lg"
-                    className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-8 py-6 text-lg shadow-md w-full sm:w-auto btn-3d"
+                    className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-8 py-6 text-lg w-full sm:w-auto btn-3d-hero"
                   >
                     <Phone className="w-5 h-5 mr-2" />
                     Call Now
@@ -276,7 +279,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 >
                   <Button
                     size="lg"
-                    className="font-bold rounded-full px-8 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90 btn-3d"
+                    className="font-bold rounded-full px-8 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90 btn-3d-hero"
                     style={{ backgroundColor: "#25D366" }}
                   >
                     <MessageCircle className="w-5 h-5 mr-2" />
@@ -316,8 +319,11 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       <section className="bg-card border-b border-border navbar-3d">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map(({ value, label }) => (
-              <div key={label} className="text-center">
+            {stats.map(({ value, label }, idx) => (
+              <div
+                key={label}
+                className={`text-center scroll-reveal-scale scroll-reveal-delay-${idx + 1}`}
+              >
                 <div className="text-2xl sm:text-3xl font-bold text-primary text-3d">
                   {value}
                 </div>
@@ -333,7 +339,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
       {/* All Services Section — grouped by category */}
       <section className="py-16 sm:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 scroll-reveal">
             <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary bg-primary/8 px-4 py-1.5 rounded-full border border-primary/20 mb-3">
               All Services
             </span>
@@ -348,82 +354,91 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
           {/* Category Groups */}
           <div className="space-y-12">
-            {serviceCategories.map(({ label, icon: CatIcon, services }) => (
-              <div key={label}>
-                {/* Category Header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <CatIcon className="w-5 h-5 text-primary" />
+            {serviceCategories.map(
+              ({ label, icon: CatIcon, services }, catIdx) => (
+                <div key={label}>
+                  {/* Category Header */}
+                  <div
+                    className={`flex items-center gap-3 mb-6 ${catIdx % 2 === 0 ? "scroll-reveal-left" : "scroll-reveal-right"}`}
+                  >
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <CatIcon className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="text-base font-bold text-foreground">
+                      {label}
+                    </h3>
+                    <div className="h-px flex-grow bg-border" />
                   </div>
-                  <h3 className="text-base font-bold text-foreground">
-                    {label}
-                  </h3>
-                  <div className="h-px flex-grow bg-border" />
-                </div>
 
-                {/* Service Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-4xl mx-auto">
-                  {services.map(
-                    ({ icon: Icon, iconBg, iconColor, title, description }) => (
-                      <button
-                        key={title}
-                        type="button"
-                        onClick={() => handleServiceClick(title)}
-                        data-ocid={`home.service.${title.toLowerCase().replace(/[^a-z0-9]/g, "_")}`}
-                        className={[
-                          "w-full text-left bg-card rounded-xl border-2 p-5 transition-all duration-200 group cursor-pointer select-none relative overflow-hidden card-3d",
-                          clickedCard === title
-                            ? "border-primary scale-[1.03]"
-                            : "border-border hover:border-primary/50",
-                        ].join(" ")}
-                      >
-                        {/* Wind burst for clicked */}
-                        {clickedCard === title && (
-                          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-10">
-                            <div
-                              className="wind-streak"
-                              style={{ top: "30%", animationDelay: "0ms" }}
-                            />
-                            <div
-                              className="wind-streak-wide"
-                              style={{ top: "50%", animationDelay: "80ms" }}
-                            />
-                            <div
-                              className="wind-streak"
-                              style={{ top: "70%", animationDelay: "160ms" }}
-                            />
-                          </div>
-                        )}
+                  {/* Service Cards — top category gets stronger 3D */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-4xl mx-auto">
+                    {services.map(
+                      (
+                        { icon: Icon, iconBg, iconColor, title, description },
+                        svcIdx,
+                      ) => (
+                        <button
+                          key={title}
+                          type="button"
+                          onClick={() => handleServiceClick(title)}
+                          data-ocid={`home.service.${title.toLowerCase().replace(/[^a-z0-9]/g, "_")}`}
+                          className={[
+                            "w-full text-left bg-card rounded-xl border-2 p-5 transition-all duration-200 group cursor-pointer select-none relative overflow-hidden",
+                            catIdx === 0 ? "card-3d-top" : "card-3d",
+                            `scroll-reveal scroll-reveal-delay-${svcIdx + 1}`,
+                            clickedCard === title
+                              ? "border-primary scale-[1.03]"
+                              : "border-border hover:border-primary/50",
+                          ].join(" ")}
+                        >
+                          {/* Wind burst for clicked */}
+                          {clickedCard === title && (
+                            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-10">
+                              <div
+                                className="wind-streak"
+                                style={{ top: "30%", animationDelay: "0ms" }}
+                              />
+                              <div
+                                className="wind-streak-wide"
+                                style={{ top: "50%", animationDelay: "80ms" }}
+                              />
+                              <div
+                                className="wind-streak"
+                                style={{ top: "70%", animationDelay: "160ms" }}
+                              />
+                            </div>
+                          )}
 
-                        <div className="flex items-start gap-4">
-                          <div
-                            className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${iconBg} group-hover:scale-110`}
-                          >
-                            <Icon className={`w-6 h-6 ${iconColor}`} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-base text-foreground mb-1 leading-tight">
-                              {title}
-                            </h4>
-                            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                              {description}
-                            </p>
-                            <div className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-primary">
-                              <Wind className="w-3.5 h-3.5" />
-                              <span>Book Now →</span>
+                          <div className="flex items-start gap-4">
+                            <div
+                              className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${iconBg} group-hover:scale-110`}
+                            >
+                              <Icon className={`w-6 h-6 ${iconColor}`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-bold text-base text-foreground mb-1 leading-tight">
+                                {title}
+                              </h4>
+                              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                                {description}
+                              </p>
+                              <div className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-primary">
+                                <Wind className="w-3.5 h-3.5" />
+                                <span>Book Now →</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </button>
-                    ),
-                  )}
+                        </button>
+                      ),
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
 
           {/* Why Choose Us brief */}
-          <div className="mt-14 bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto card-3d-sm">
+          <div className="mt-14 bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto card-3d-sm scroll-reveal">
             <h3 className="font-bold text-base sm:text-lg text-foreground mb-4 text-center text-3d">
               Kyun Chunein Wave AC Services?
             </h3>
@@ -439,7 +454,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
           {/* Hamari Team subsection */}
           <div className="mt-14">
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-8 scroll-reveal">
               <div className="h-px flex-grow bg-border" />
               <span className="text-sm font-bold text-primary bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 whitespace-nowrap flex items-center gap-2">
                 <Users className="w-4 h-4" />
@@ -452,7 +467,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
                 <div
                   key={id}
                   data-ocid={`team.item.${idx + 1}`}
-                  className="bg-card rounded-xl p-6 text-center border border-border card-3d-sm"
+                  className={`bg-card rounded-xl p-6 text-center border border-border scroll-reveal scroll-reveal-delay-${idx + 1}`}
                 >
                   <img
                     src={photo}
@@ -469,13 +484,20 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
         </div>
       </section>
 
+      {/* AC Diagram Section */}
+      <section id="ac-diagram" className="py-16 sm:py-20 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-reveal-scale">
+          <ACDiagram />
+        </div>
+      </section>
+
       {/* Quick Booking Section */}
       <section
         ref={bookingRef}
         className="py-16 sm:py-20 bg-card border-y border-border"
       >
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10">
+          <div className="text-center mb-10 scroll-reveal">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 text-3d">
               Book a Service
             </h2>
@@ -486,7 +508,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           </div>
 
           {submitted ? (
-            <div className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center card-3d-sm">
+            <div className="flex flex-col items-center justify-center p-12 rounded-2xl border border-green-200 bg-green-50 text-center scroll-reveal-scale">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
                 style={{ backgroundColor: "#25D366" }}
@@ -502,7 +524,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
               </p>
               <Button
                 onClick={() => setSubmitted(false)}
-                className="mt-6 font-bold rounded-full px-8 py-5 text-base text-white hover:opacity-90 btn-3d"
+                className="mt-6 font-bold rounded-full px-8 py-5 text-base text-white hover:opacity-90 shadow-sm"
                 style={{ backgroundColor: "#25D366" }}
               >
                 Book Another Service
@@ -511,7 +533,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-5 bg-background rounded-2xl border border-border p-7 form-3d"
+              className="space-y-5 bg-background rounded-2xl border border-border p-7 form-3d scroll-reveal"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
@@ -598,7 +620,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
 
               <Button
                 type="submit"
-                className="w-full font-bold text-base py-6 rounded-full text-white hover:opacity-90 btn-3d"
+                className="w-full font-bold text-base py-6 rounded-full text-white hover:opacity-90 shadow-sm"
                 style={{ backgroundColor: "#25D366" }}
                 data-ocid="home.booking_submit"
               >
@@ -623,7 +645,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
             "linear-gradient(135deg, oklch(0.32 0.12 245) 0%, oklch(0.45 0.12 245) 100%)",
         }}
       >
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-reveal-scale">
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
             <Users className="w-8 h-8 text-white" />
           </div>
@@ -638,7 +660,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
             <a href="tel:+919871984736" data-ocid="cta.primary_button">
               <Button
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto btn-3d"
+                className="bg-white text-primary hover:bg-white/90 font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto shadow-sm"
               >
                 <Phone className="w-6 h-6 mr-2" />
                 +91-9871984736
@@ -652,7 +674,7 @@ export function HomePage({ onNavigate: _onNavigate }: HomePageProps) {
             >
               <Button
                 size="lg"
-                className="font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90 btn-3d"
+                className="font-bold rounded-full px-10 py-6 text-lg w-full sm:w-auto text-white hover:opacity-90 shadow-sm"
                 style={{ backgroundColor: "#25D366" }}
               >
                 <MessageCircle className="w-6 h-6 mr-2" />

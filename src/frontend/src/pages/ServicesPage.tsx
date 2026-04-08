@@ -364,21 +364,25 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
             {filteredServices.map(
-              ({
-                icon: Icon,
-                iconBg,
-                iconColor,
-                title,
-                description,
-                features,
-                duration,
-              }) => (
+              (
+                {
+                  icon: Icon,
+                  iconBg,
+                  iconColor,
+                  title,
+                  description,
+                  features,
+                  duration,
+                },
+                idx,
+              ) => (
                 <button
                   key={title}
                   type="button"
                   data-ocid={`services.item.${title.toLowerCase().replace(/[^a-z0-9]/g, "_")}`}
                   className={[
                     "relative bg-card rounded-2xl border-2 flex flex-col overflow-hidden group cursor-pointer text-left w-full card-3d",
+                    `scroll-reveal scroll-reveal-delay-${Math.min(idx + 1, 5)}`,
                     clickedCard === title
                       ? "border-primary scale-[1.03]"
                       : "border-border hover:border-primary/40",
@@ -471,10 +475,10 @@ export function ServicesPage({ onNavigate, onBookService }: ServicesPageProps) {
       <section className="py-10 bg-card border-y border-border">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {trustBadges.map(({ icon: Icon, label }) => (
+            {trustBadges.map(({ icon: Icon, label }, idx) => (
               <div
                 key={label}
-                className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left card-3d-sm p-3 rounded-xl"
+                className={`flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left card-3d-sm p-3 rounded-xl scroll-reveal scroll-reveal-delay-${idx + 1}`}
               >
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Icon className="w-5 h-5 text-primary" />

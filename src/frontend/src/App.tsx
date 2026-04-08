@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
+import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
 import { ContactPage } from "./pages/ContactPage";
 import { HomePage } from "./pages/HomePage";
 import { ServicesPage } from "./pages/ServicesPage";
@@ -13,6 +14,9 @@ type Page = "home" | "services" | "why-us" | "testimonials" | "contact";
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("home");
   const [selectedService, setSelectedService] = useState<string>("");
+
+  // Global scroll-triggered 3D reveal for all pages
+  useGlobalScrollReveal();
 
   const handleNavigateToBooking = (service: string) => {
     setSelectedService(service);
